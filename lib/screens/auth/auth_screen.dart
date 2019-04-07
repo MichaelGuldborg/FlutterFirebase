@@ -1,93 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_app/bloc/authentication/authentication.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
-import 'package:flutter_firebase_app/screens/auth/login_screen.dart';
-import 'package:flutter_firebase_app/screens/auth/register_screen.dart';
+import 'package:flutter_firebase_app/constants/routes.dart';
+import 'package:flutter_firebase_app/services/auth_service.dart';
 
 class AuthScreen extends StatelessWidget {
-  final AuthenticationBloc _authBloc;
+  AuthService _authService = AuthService();
 
-  AuthScreen({@required AuthenticationBloc authBloc})
-      : assert(authBloc != null),
-        _authBloc = authBloc;
+  // TODO Make widget an inherited widget
+  // https://medium.com/flutter-community/widget-state-buildcontext-inheritedwidget-898d671b7956
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        bloc: _authBloc,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FlutterLogo(
-                    size: 80.0,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlutterLogo(
+                  size: 80.0,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  "Flutter App",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
                   ),
-                  SizedBox(height: 16),
-                  Text(
-                    "Flutter App",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  RoundedButton(
-                    text: "signInAnonymously",
-                    onPressed: () {
-                      _authBloc.dispatch(SignInAnonymously());
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  RoundedButton(
-                    text: "Login",
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                LoginScreen(authBloc: _authBloc)),
-                      );
-                      //await _userRepository.signInAnonymously();
-                      //_authBloc.dispatch(Login());
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  RoundedButton(
-                    text: "Login With Google",
-                    onPressed: () {
-                      _authBloc.dispatch(SignInWithGoogle());
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  RoundedButton(
-                    transparent: true,
-                    text: "Register",
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                RegisterScreen(authBloc: _authBloc)),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 32),
-                ],
-              ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RoundedButton(
+                  text: "signInAnonymously",
+                  onPressed: () async {
+                    final uid = await _authService.signInAnonymously();
+                    if (uid != null) {
+                      Navigator.of(context).pushReplacementNamed(Routes.home);
+                    }
+                  },
+                ),
+                SizedBox(height: 16),
+                RoundedButton(
+                  text: "Login",
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed(Routes.login);
+                  },
+                ),
+                SizedBox(height: 16),
+                RoundedButton(
+                  text: "signInWithGoogle",
+                  onPressed: () async {
+                    final uid = await _authService.signInWithGoogle();
+                    if (uid != null) {
+                      Navigator.of(context).pushReplacementNamed(Routes.home);
+                    }
+                  },
+                ),
+                SizedBox(height: 16),
+                RoundedButton(
+                  transparent: true,
+                  text: "Register",
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed(Routes.register);
+                  },
+                ),
+                SizedBox(height: 32),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

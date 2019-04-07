@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/bloc/authentication/authentication.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
 
 class LoginScreen extends StatelessWidget {
-  final AuthenticationBloc _authBloc;
-
-  LoginScreen({@required AuthenticationBloc authBloc})
-      : assert(authBloc != null),
-        _authBloc = authBloc;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(child: LoginForm(context)));
@@ -38,11 +31,7 @@ class LoginScreen extends StatelessWidget {
           RoundedButton(
               text: "Login",
               onPressed: () {
-                _authBloc.dispatch(SignInWithEmail(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                ));
-                Navigator.pop(context);
+                // TODO
               }),
         ],
       ),

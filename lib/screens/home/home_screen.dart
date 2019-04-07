@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_app/bloc/authentication/authentication.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
+import 'package:flutter_firebase_app/services/auth_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
-  final FirebaseUser firebaseUser;
+  AuthService _authService = AuthService();
 
-  HomeScreen({Key key, @required this.firebaseUser}) : super(key: key);
+
+  final String displayName = "null";
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(Routes.profile, arguments: firebaseUser);
+
             },
             icon: Icon(FontAwesomeIcons.user, color: Colors.white),
           )
@@ -27,11 +27,12 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Center(child: Text('Welcome ${firebaseUser.displayName}!')),
+          Center(child: Text('Welcome $displayName!')),
           Center(
             child: RaisedButton(
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context).dispatch(Logout());
+              onPressed: () async {
+                await _authService.signOut();
+                Navigator.of(context).pushReplacementNamed(Routes.splash);
               },
               child: Text('Sign Out'),
             ),
