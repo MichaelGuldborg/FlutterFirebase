@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/services/auth_service.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_activity.dart';
+import 'package:flutter_firebase_app/screens/auth/login_fragment.dart';
+import 'package:flutter_firebase_app/screens/auth/register_fragment.dart';
 
-class AuthScreen extends StatelessWidget {
-  AuthService _authService = AuthService();
-
-  // TODO Make widget an inherited widget
-  // https://medium.com/flutter-community/widget-state-buildcontext-inheritedwidget-898d671b7956
-
-
+class AuthFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final AuthActivityState state = AuthActivity.of(context, false);
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,24 +41,24 @@ class AuthScreen extends StatelessWidget {
                 RoundedButton(
                   text: "signInAnonymously",
                   onPressed: () async {
-                    final uid = await _authService.signInAnonymously();
-                    if (uid != null) {
-                      Navigator.of(context).pushReplacementNamed(Routes.home);
-                    }
+                    // final uid = await _authService.signInAnonymously();
+                    // if (uid != null) {
+                    Navigator.of(context).pushReplacementNamed(Routes.home);
+                    // }
                   },
                 ),
                 SizedBox(height: 16),
                 RoundedButton(
                   text: "Login",
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed(Routes.login);
+                    state.navigateTo(LoginFragment());
                   },
                 ),
                 SizedBox(height: 16),
                 RoundedButton(
                   text: "signInWithGoogle",
                   onPressed: () async {
-                    final uid = await _authService.signInWithGoogle();
+                    final uid = await state.authService.signInWithGoogle();
                     if (uid != null) {
                       Navigator.of(context).pushReplacementNamed(Routes.home);
                     }
@@ -71,7 +69,7 @@ class AuthScreen extends StatelessWidget {
                   transparent: true,
                   text: "Register",
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed(Routes.register);
+                    state.navigateTo(RegisterFragment());
                   },
                 ),
                 SizedBox(height: 32),

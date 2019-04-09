@@ -1,25 +1,29 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/services/auth_service.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashActivity extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _SplashActivityState createState() => _SplashActivityState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  AuthService _authService = AuthService();
+class _SplashActivityState extends State<SplashActivity> {
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
-    // Delay needed for screen to finnish building
-    Future.delayed(const Duration(seconds: 1), handleNavigation);
   }
 
-  handleNavigation() async {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Delay for visual effect
+    Future.delayed(const Duration(seconds: 1), handleNavigation);
+    // handleNavigation();
+  }
+
+  void handleNavigation() async {
     final currentUser = await _authService.getCurrentUser();
     if (currentUser == null) {
       Navigator.of(context).pushReplacementNamed(Routes.auth);
@@ -48,20 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: FlutterLogo(),
                 ),
               ),
-              true
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "flutter",
-                        style: TextStyle(
-                            color: Colors.lightBlueAccent,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 2),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
             ],
           ),
         ),

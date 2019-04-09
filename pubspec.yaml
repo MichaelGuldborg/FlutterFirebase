@@ -19,7 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_auth: 0.7.0
+  firebase_auth: 0.7.0 # Version 0.8.4 uses androidx
+  firebase_database: 1.0.3 # Version 2.0.2 uses newer firebase core than auth 0.7.0
   google_sign_in: 3.2.4
   font_awesome_flutter: ^8.4.0
 

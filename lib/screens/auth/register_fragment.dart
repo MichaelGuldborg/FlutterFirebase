@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
+import 'package:flutter_firebase_app/constants/routes.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_activity.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegisterFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: LoginForm(context)));
+    return Scaffold(body: Center(child: RegisterForm(context)));
   }
 
-  Widget LoginForm(BuildContext context) {
+  Widget RegisterForm(BuildContext context) {
+    final AuthActivityState state = AuthActivity.of(context, false);
+    final _usernameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
 
@@ -16,6 +20,10 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          TextFormField(
+            decoration: InputDecoration(labelText: 'username'),
+            controller: _usernameController,
+          ),
           TextFormField(
             decoration: InputDecoration(labelText: 'email'),
             controller: _emailController,
@@ -29,9 +37,15 @@ class LoginScreen extends StatelessWidget {
             height: 16,
           ),
           RoundedButton(
-              text: "Login",
+              text: "Register",
               onPressed: () {
-                // TODO
+                final uid = state.authService.signUpWithEmail(
+                    _usernameController.text,
+                    _emailController.text,
+                    _passwordController.text);
+                if (uid != null) {
+                  Navigator.of(context).pushReplacementNamed(Routes.home);
+                }
               }),
         ],
       ),
