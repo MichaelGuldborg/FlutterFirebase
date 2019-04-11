@@ -42,28 +42,27 @@ class _EventEditScreenState extends State<EventEditScreen> {
         title: Text('Event'),
       ),
       body: Container(
-        height: 200,
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             TextField(
               controller: _titleController,
-              decoration: InputDecoration.collapsed(hintText: 'Title'),
+              decoration: InputDecoration(hintText: 'Title'),
               onSubmitted: (t) => _handleSubmit(),
             ),
             TextField(
               controller: _descriptionController,
-              decoration: InputDecoration.collapsed(hintText: 'Description'),
+              decoration: InputDecoration(hintText: 'Description'),
               onSubmitted: (t) => _handleSubmit(),
             ),
             TextField(
               controller: _dateController,
-              decoration: InputDecoration.collapsed(hintText: 'Date'),
+              decoration: InputDecoration(hintText: 'Date'),
               onSubmitted: (t) => _handleSubmit(),
             ),
             TextField(
               controller: _timeController,
-              decoration: InputDecoration.collapsed(hintText: 'Time'),
+              decoration: InputDecoration(hintText: 'Time'),
               onSubmitted: (t) => _handleSubmit(),
             ),
           ],

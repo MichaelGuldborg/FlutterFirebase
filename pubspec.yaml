@@ -22,6 +22,7 @@ dependencies:
   firebase_auth: 0.7.0 # Version 0.8.4 uses androidx
   firebase_database: 1.0.3 # Version 2.0.2 uses newer firebase core than auth 0.7.0
   google_sign_in: 3.2.4
+  image_picker: 0.4.10 # TODO config iOS https://pub.dartlang.org/packages/image_picker
   font_awesome_flutter: ^8.4.0
 
 dev_dependencies:
@@ -40,6 +41,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/images/place_holder.jpg
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

@@ -38,8 +38,10 @@ class EventScreenState extends State<EventScreen> {
                 Navigator.of(context).pushReplacementNamed(Routes.auth);
               }),
           IconButton(
-            onPressed: () {},
             icon: Icon(FontAwesomeIcons.user, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routes.settings);
+            },
           )
         ],
         title: Text('Dashboard'),
@@ -63,9 +65,7 @@ class EventScreenState extends State<EventScreen> {
           ],
         ),
       ),
-      persistentFooterButtons: <Widget>[
-        Text('Welcome ${currentUser?.email}!')
-      ],
+      persistentFooterButtons: <Widget>[Text('Welcome ${currentUser?.email}!')],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(Routes.event);

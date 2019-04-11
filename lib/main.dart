@@ -5,10 +5,12 @@ import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 import 'package:flutter_firebase_app/screens/chat/chat_screen.dart';
 import 'package:flutter_firebase_app/screens/event/event_edit_screen.dart';
 import 'package:flutter_firebase_app/screens/event/event_screen.dart';
+import 'package:flutter_firebase_app/screens/settings/settings_screen.dart';
 import 'package:flutter_firebase_app/screens/splash_screen.dart';
 
 void main() => runApp(App());
 
+// Maybe switch to block ... don't know
 class _AppStateProvider extends InheritedWidget {
   _AppStateProvider({
     Key key,
@@ -53,12 +55,15 @@ class AppState extends State<App> {
     return _AppStateProvider(
       state: this,
       child: MaterialApp(
-        theme: ThemeData(),
+        theme: ThemeData(
+          backgroundColor: Colors.transparent
+        ),
         initialRoute: Routes.splash,
         routes: <String, WidgetBuilder>{
           Routes.splash: (BuildContext context) => SplashScreen(),
           Routes.auth: (BuildContext context) => AuthScreen(),
           Routes.home: (BuildContext context) => EventScreen(),
+          Routes.settings: (BuildContext context) => SettingsScreen(),
           Routes.chat: (BuildContext context) => ChatView(chatId: 'chatIdtemp'),
           Routes.event: (BuildContext context) => EventEditScreen(),
         },
