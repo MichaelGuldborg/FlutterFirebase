@@ -7,7 +7,7 @@ import 'package:flutter_firebase_app/screens/auth/register_view.dart';
 class AuthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthScreenState state = AuthScreen.of(context, false);
+    final AuthScreenState state = AuthScreenState.of(context, false);
 
     return Scaffold(
       body: Column(
@@ -57,7 +57,7 @@ class AuthView extends StatelessWidget {
                 RoundedButton(
                   text: "signInWithGoogle",
                   onPressed: () async {
-                    final user = await state.widget.auth.signInWithGoogle();
+                    final user = await state.auth.signInWithGoogle();
                     state.handleSignIn(user);
                   },
                 ),

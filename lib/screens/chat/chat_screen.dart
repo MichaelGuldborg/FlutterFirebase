@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/models/message.dart';
 import 'package:flutter_firebase_app/screens/chat/chat_input.dart';
 import 'package:flutter_firebase_app/screens/chat/message_view.dart';
 
 class ChatView extends StatefulWidget {
-  final FirebaseUser currentUser;
   final String chatId;
 
-  const ChatView({@required this.currentUser, this.chatId});
+  const ChatView({this.chatId});
 
   @override
   _ChatViewState createState() => _ChatViewState();
@@ -43,6 +43,8 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseUser currentUser = AppState.of(context).currentUser;
+
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 0,
@@ -86,7 +88,7 @@ class _ChatViewState extends State<ChatView> {
                 itemBuilder: (_, int index) => MessageView(
                     text: _messageList[index].text,
                     isMe: _messageList[index].author.uid ==
-                        widget.currentUser?.uid),
+                        currentUser?.uid),
                 itemCount: _messageList.length,
               ),
             ),

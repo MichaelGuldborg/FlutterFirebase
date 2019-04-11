@@ -16,7 +16,7 @@ class Auth {
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
-    // TODO Google require sha-1 config
+    // TODO Google requires sha-1 config
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;

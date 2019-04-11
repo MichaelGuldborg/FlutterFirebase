@@ -10,7 +10,7 @@ class LoginView extends StatelessWidget {
   }
 
   Widget LoginForm(BuildContext context) {
-    final AuthScreenState state = AuthScreen.of(context, false);
+    final AuthScreenState state = AuthScreenState.of(context, false);
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
 
@@ -34,7 +34,7 @@ class LoginView extends StatelessWidget {
           RoundedButton(
               text: "Login",
               onPressed: () async {
-                final user = await state.widget.auth.signInWithEmail(
+                final user = await state.auth.signInWithEmail(
                     _emailController.text, _passwordController.text);
                 state.handleSignIn(user);
               }),

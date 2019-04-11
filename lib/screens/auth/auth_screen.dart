@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
+import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_view.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
@@ -30,14 +31,11 @@ class _StateProvider extends InheritedWidget {
 }
 
 class AuthScreen extends StatefulWidget {
-  final Auth auth;
-  final FirebaseUserCallback updateCurrentUser;
-
-  AuthScreen({@required this.auth, @required this.updateCurrentUser});
-
   @override
   AuthScreenState createState() => AuthScreenState();
+}
 
+class AuthScreenState extends State<AuthScreen> {
   static AuthScreenState of([BuildContext context, bool rebuild = true]) {
     return (rebuild
             ? context.inheritFromWidgetOfExactType(_StateProvider)
@@ -46,13 +44,15 @@ class AuthScreen extends StatefulWidget {
                 as _StateProvider)
         .state;
   }
-}
 
-class AuthScreenState extends State<AuthScreen> {
   void handleSignIn(FirebaseUser user) async {
-    await super.widget.updateCurrentUser(user);
+    final state = AppState.of(context);
+    state.updateCurrentUser(user);
     Navigator.of(context).pushReplacementNamed(Routes.home);
   }
+
+  /// Auth service
+  final Auth auth = Auth();
 
   /// List of Widgets
   List<Widget> _fragments = <Widget>[AuthView()];

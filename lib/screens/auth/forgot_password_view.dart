@@ -4,7 +4,7 @@ import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 class ForgotPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthScreenState state = AuthScreen.of(context, false);
+    final AuthScreenState state = AuthScreenState.of(context, false);
     final _emailController = TextEditingController();
     String errorText = null;
 
@@ -23,7 +23,7 @@ class ForgotPasswordView extends StatelessWidget {
                 return;
               }
 
-              state.widget.auth.sendPasswordResetEmail(email);
+              state.auth.sendPasswordResetEmail(email);
               state.backPressed();
             },
           ),

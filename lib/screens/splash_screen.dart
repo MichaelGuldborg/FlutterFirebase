@@ -4,11 +4,6 @@ import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
 class SplashScreen extends StatefulWidget {
-  final Auth auth;
-  final FirebaseUserCallback updateCurrentUser;
-
-  SplashScreen({this.auth, this.updateCurrentUser});
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -23,8 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void handleNavigation() async {
-    final currentUser = await widget.auth.getCurrentUser();
-    widget.updateCurrentUser(currentUser);
+    final AppState state = AppState.of(context);
+    final currentUser = await Auth().getCurrentUser();
+    state.updateCurrentUser(currentUser);
     final String route = currentUser == null ? Routes.auth : Routes.home;
     Navigator.of(context).pushReplacementNamed(route);
   }

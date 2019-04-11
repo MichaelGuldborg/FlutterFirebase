@@ -1,16 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/services/auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_firebase_app/main.dart';
 
 class EventEditScreen extends StatefulWidget {
-  final FirebaseUser currentUser;
-
-  EventEditScreen({this.currentUser});
-
   @override
   _EventEditScreenState createState() => _EventEditScreenState();
 }
@@ -42,6 +35,8 @@ class _EventEditScreenState extends State<EventEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseUser currentUser = AppState.of(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Event'),
@@ -74,9 +69,7 @@ class _EventEditScreenState extends State<EventEditScreen> {
           ],
         ),
       ),
-      persistentFooterButtons: <Widget>[
-        Text('Welcome ${widget.currentUser?.displayName}!')
-      ],
+      persistentFooterButtons: <Widget>[Text('Welcome ${currentUser?.email}!')],
     );
   }
 }

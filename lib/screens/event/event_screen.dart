@@ -3,15 +3,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
+import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EventScreen extends StatefulWidget {
-  final Auth auth;
-  final FirebaseUser currentUser;
-
-  EventScreen({this.auth, this.currentUser});
-
   @override
   EventScreenState createState() => EventScreenState();
 }
@@ -25,6 +21,8 @@ class EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseUser currentUser = AppState.of(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -36,7 +34,7 @@ class EventScreenState extends State<EventScreen> {
           FlatButton(
               child: Text("logout", style: TextStyle(color: Colors.white)),
               onPressed: () async {
-                await widget.auth.signOut();
+                await Auth().signOut();
                 Navigator.of(context).pushReplacementNamed(Routes.auth);
               }),
           IconButton(
@@ -66,7 +64,7 @@ class EventScreenState extends State<EventScreen> {
         ),
       ),
       persistentFooterButtons: <Widget>[
-        Text('Welcome ${widget.currentUser?.displayName}!')
+        Text('Welcome ${currentUser?.email}!')
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: () {

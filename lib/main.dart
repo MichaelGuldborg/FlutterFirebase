@@ -6,9 +6,23 @@ import 'package:flutter_firebase_app/screens/chat/chat_screen.dart';
 import 'package:flutter_firebase_app/screens/event/event_edit_screen.dart';
 import 'package:flutter_firebase_app/screens/event/event_screen.dart';
 import 'package:flutter_firebase_app/screens/splash_screen.dart';
-import 'package:flutter_firebase_app/services/auth.dart';
 
 void main() => runApp(App());
+
+class _AppStateProvider extends InheritedWidget {
+  _AppStateProvider({
+    Key key,
+    @required Widget child,
+    @required this.state,
+  }) : super(key: key, child: child);
+
+  final AppState state;
+
+  @override
+  bool updateShouldNotify(_AppStateProvider oldWidget) {
+    return true;
+  }
+}
 
 class App extends StatefulWidget {
   State<App> createState() => AppState();
@@ -16,7 +30,12 @@ class App extends StatefulWidget {
 
 // TODO change to _AppState.of(context) pattern
 class AppState extends State<App> {
-  final Auth _auth = Auth();
+  static AppState of([BuildContext context]) {
+    final provider = context.ancestorWidgetOfExactType(_AppStateProvider)
+        as _AppStateProvider;
+    return provider.state;
+  }
+
   FirebaseUser currentUser;
 
   void updateCurrentUser(FirebaseUser user) async {
@@ -31,30 +50,19 @@ class AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(),
-      initialRoute: Routes.splash,
-      routes: <String, WidgetBuilder>{
-        Routes.splash: (BuildContext context) => SplashScreen(
-              auth: _auth,
-              updateCurrentUser: updateCurrentUser,
-            ),
-        Routes.auth: (BuildContext context) => AuthScreen(
-              auth: _auth,
-              updateCurrentUser: updateCurrentUser,
-            ),
-        Routes.home: (BuildContext context) => EventScreen(
-              auth: _auth,
-              currentUser: currentUser,
-            ),
-        Routes.chat: (BuildContext context) => ChatView(
-              currentUser: currentUser,
-              chatId: 'chatIdtemp',
-            ),
-        Routes.event: (BuildContext context) => EventEditScreen(
-              currentUser: currentUser,
-            ),
-      },
+    return _AppStateProvider(
+      state: this,
+      child: MaterialApp(
+        theme: ThemeData(),
+        initialRoute: Routes.splash,
+        routes: <String, WidgetBuilder>{
+          Routes.splash: (BuildContext context) => SplashScreen(),
+          Routes.auth: (BuildContext context) => AuthScreen(),
+          Routes.home: (BuildContext context) => EventScreen(),
+          Routes.chat: (BuildContext context) => ChatView(chatId: 'chatIdtemp'),
+          Routes.event: (BuildContext context) => EventEditScreen(),
+        },
+      ),
     );
   }
 }

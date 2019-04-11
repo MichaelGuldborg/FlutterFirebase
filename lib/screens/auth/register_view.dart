@@ -9,7 +9,7 @@ class RegisterView extends StatelessWidget {
   }
 
   Widget RegisterForm(BuildContext context) {
-    final AuthScreenState state = AuthScreen.of(context, false);
+    final AuthScreenState state = AuthScreenState.of(context, false);
     final _usernameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
@@ -38,7 +38,7 @@ class RegisterView extends StatelessWidget {
           RoundedButton(
               text: "Register",
               onPressed: () async {
-                final user = await state.widget.auth.signUpWithEmail(
+                final user = await state.auth.signUpWithEmail(
                     _usernameController.text,
                     _emailController.text,
                     _passwordController.text);
