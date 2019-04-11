@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 import 'package:flutter_firebase_app/screens/auth/login_view.dart';
 import 'package:flutter_firebase_app/screens/auth/register_view.dart';
 
-class AuthFragment extends StatelessWidget {
+class AuthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthScreenState state = AuthScreen.of(context, false);
@@ -51,7 +50,7 @@ class AuthFragment extends StatelessWidget {
                 RoundedButton(
                   text: "Login",
                   onPressed: () {
-                    state.navigateTo(LoginFragment());
+                    state.navigateTo(LoginView());
                   },
                 ),
                 SizedBox(height: 16),
@@ -67,7 +66,7 @@ class AuthFragment extends StatelessWidget {
                   transparent: true,
                   text: "Register",
                   onPressed: () {
-                    state.navigateTo(RegisterFragment());
+                    state.navigateTo(RegisterView());
                   },
                 ),
                 SizedBox(height: 32),

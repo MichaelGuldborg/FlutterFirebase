@@ -11,20 +11,15 @@ import 'package:flutter_firebase_app/services/auth.dart';
 void main() => runApp(App());
 
 class App extends StatefulWidget {
-  State<App> createState() => _AppState();
+  State<App> createState() => AppState();
 }
 
 // TODO change to _AppState.of(context) pattern
-class _AppState extends State<App> {
+class AppState extends State<App> {
   final Auth _auth = Auth();
   FirebaseUser currentUser;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _signIn(FirebaseUser user) async {
+  void updateCurrentUser(FirebaseUser user) async {
     if (user == null) {
       return;
     }
@@ -37,17 +32,16 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(
-        auth: _auth,
-        signIn: _signIn,
-      ),
+      theme: ThemeData(),
+      initialRoute: Routes.splash,
       routes: <String, WidgetBuilder>{
         Routes.splash: (BuildContext context) => SplashScreen(
               auth: _auth,
+              updateCurrentUser: updateCurrentUser,
             ),
         Routes.auth: (BuildContext context) => AuthScreen(
               auth: _auth,
-              signIn: _signIn,
+              updateCurrentUser: updateCurrentUser,
             ),
         Routes.home: (BuildContext context) => EventScreen(
               auth: _auth,

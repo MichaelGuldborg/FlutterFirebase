@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
+import 'package:flutter_firebase_app/screens/auth/forgot_password_view.dart';
 
-class LoginFragment extends StatelessWidget {
+class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(child: LoginForm(context)));
@@ -15,7 +15,7 @@ class LoginFragment extends StatelessWidget {
     final _passwordController = TextEditingController();
 
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -38,6 +38,11 @@ class LoginFragment extends StatelessWidget {
                     _emailController.text, _passwordController.text);
                 state.handleSignIn(user);
               }),
+          FlatButton(
+              onPressed: () {
+                state.navigateTo(ForgotPasswordView());
+              },
+              child: Text("Forgot password"))
         ],
       ),
     );

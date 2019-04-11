@@ -31,9 +31,9 @@ class _StateProvider extends InheritedWidget {
 
 class AuthScreen extends StatefulWidget {
   final Auth auth;
-  final FirebaseUserCallback signIn;
+  final FirebaseUserCallback updateCurrentUser;
 
-  AuthScreen({@required this.auth, @required this.signIn});
+  AuthScreen({@required this.auth, @required this.updateCurrentUser});
 
   @override
   AuthScreenState createState() => AuthScreenState();
@@ -50,12 +50,12 @@ class AuthScreen extends StatefulWidget {
 
 class AuthScreenState extends State<AuthScreen> {
   void handleSignIn(FirebaseUser user) async {
-    await super.widget.signIn(user);
+    await super.widget.updateCurrentUser(user);
     Navigator.of(context).pushReplacementNamed(Routes.home);
   }
 
   /// List of Widgets
-  List<Widget> _fragments = <Widget>[AuthFragment()];
+  List<Widget> _fragments = <Widget>[AuthView()];
 
   /// Getter (current widget)
   Widget get currentFragment => _fragments.last;

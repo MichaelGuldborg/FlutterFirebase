@@ -7,7 +7,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 typedef FirebaseUserCallback = void Function(FirebaseUser);
 
 class Auth {
-
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -56,12 +55,16 @@ class Auth {
     return user;
   }
 
-  Future<FirebaseUser> getCurrentUser() async {
-    return await _firebaseAuth.currentUser();
+  Future<void> sendPasswordResetEmail(email) async {
+    return _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
+  }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    return await _firebaseAuth.currentUser();
   }
 
   Future<void> sendEmailVerification() async {

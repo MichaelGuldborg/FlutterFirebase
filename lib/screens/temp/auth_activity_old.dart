@@ -44,7 +44,7 @@ class MyInheritedWidget extends StatefulWidget {
 
 class MyInheritedWidgetState extends State<MyInheritedWidget> {
   /// List of Widgets
-  List<Widget> _widgets = <Widget>[AuthFragment()];
+  List<Widget> _widgets = <Widget>[AuthView()];
 
   /// Getter (number of widgets)
   int get widgetsCount => _widgets.length;
