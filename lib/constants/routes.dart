@@ -7,7 +7,13 @@ class Routes {
 
   // Dashboard
   static const home = '/home';
+  static const chat = '/chat';
+  static const event = '/event';
+
+
+
   static const settings = '/settings';
   static const profile = '/profile';
   static const about = '/about';
+
 }

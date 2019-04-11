@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/services/auth_service.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 
-class SplashActivity extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
+  final Auth auth;
+  final FirebaseUserCallback signIn;
+
+  SplashScreen({@required this.auth, this.signIn});
+
   @override
-  _SplashActivityState createState() => _SplashActivityState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashActivityState extends State<SplashActivity> {
-  final AuthService _authService = AuthService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     // Delay for visual effect
     Future.delayed(const Duration(seconds: 1), handleNavigation);
-    // handleNavigation();
   }
 
   void handleNavigation() async {
-    final currentUser = await _authService.getCurrentUser();
-    if (currentUser == null) {
-      Navigator.of(context).pushReplacementNamed(Routes.auth);
-      return;
-    }
-    Navigator.of(context).pushReplacementNamed(Routes.home);
+    final currentUser = await widget.auth.getCurrentUser();
+    super.widget.signIn(currentUser);
+    String route = currentUser == null ? Routes.auth : Routes.home;
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   @override

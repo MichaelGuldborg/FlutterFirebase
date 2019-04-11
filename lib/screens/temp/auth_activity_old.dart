@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_fragment.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_view.dart';
 
 class Item {
   String reference;

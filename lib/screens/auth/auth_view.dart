@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_activity.dart';
-import 'package:flutter_firebase_app/screens/auth/login_fragment.dart';
-import 'package:flutter_firebase_app/screens/auth/register_fragment.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
+import 'package:flutter_firebase_app/screens/auth/login_view.dart';
+import 'package:flutter_firebase_app/screens/auth/register_view.dart';
 
 class AuthFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthActivityState state = AuthActivity.of(context, false);
+    final AuthScreenState state = AuthScreen.of(context, false);
 
     return Scaffold(
       body: Column(
@@ -43,7 +43,7 @@ class AuthFragment extends StatelessWidget {
                   onPressed: () async {
                     // final uid = await _authService.signInAnonymously();
                     // if (uid != null) {
-                    Navigator.of(context).pushReplacementNamed(Routes.home);
+                    state.handleSignIn(null);
                     // }
                   },
                 ),
@@ -58,10 +58,8 @@ class AuthFragment extends StatelessWidget {
                 RoundedButton(
                   text: "signInWithGoogle",
                   onPressed: () async {
-                    final uid = await state.authService.signInWithGoogle();
-                    if (uid != null) {
-                      Navigator.of(context).pushReplacementNamed(Routes.home);
-                    }
+                    final user = await state.widget.auth.signInWithGoogle();
+                    state.handleSignIn(user);
                   },
                 ),
                 SizedBox(height: 16),

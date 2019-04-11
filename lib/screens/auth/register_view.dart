@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button_black.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_activity.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 
 class RegisterFragment extends StatelessWidget {
   @override
@@ -10,7 +10,7 @@ class RegisterFragment extends StatelessWidget {
   }
 
   Widget RegisterForm(BuildContext context) {
-    final AuthActivityState state = AuthActivity.of(context, false);
+    final AuthScreenState state = AuthScreen.of(context, false);
     final _usernameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
@@ -38,14 +38,12 @@ class RegisterFragment extends StatelessWidget {
           ),
           RoundedButton(
               text: "Register",
-              onPressed: () {
-                final uid = state.authService.signUpWithEmail(
+              onPressed: () async {
+                final user = await state.widget.auth.signUpWithEmail(
                     _usernameController.text,
                     _emailController.text,
                     _passwordController.text);
-                if (uid != null) {
-                  Navigator.of(context).pushReplacementNamed(Routes.home);
-                }
+                state.handleSignIn(user);
               }),
         ],
       ),

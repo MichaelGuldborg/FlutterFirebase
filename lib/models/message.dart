@@ -1,36 +1,37 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:meta/meta.dart';
 
 class Message {
   String key;
   Author author;
   String text;
-  int createTime;
+  int time;
 
   Message(this.author, this.text) {
-    this.createTime = DateTime.now().millisecondsSinceEpoch;
+    this.time = DateTime.now().millisecondsSinceEpoch;
   }
 
   Message.fromSnapshot(DataSnapshot snapshot)
       : key = snapshot.key,
-        author = snapshot.value["author"],
+        author = Author(uid: snapshot.value["author"]["uid"], name: snapshot.value["author"]["name"]),
         text = snapshot.value["text"],
-        createTime = snapshot.value["createTime"];
+        time = snapshot.value["time"];
 
   toJson() {
     return {
       "author": author.toJson(),
       "text": text,
-      "createTime": createTime,
+      "time": time,
     };
   }
 }
 
 class Author {
-  String uid;
-  String name;
+  final String uid;
+  final String name;
   String photoUrl;
 
-  Author(this.uid, this.name, {String photoUrl});
+  Author({@required this.uid, @required this.name, String photoUrl});
 
   toJson() {
     return {

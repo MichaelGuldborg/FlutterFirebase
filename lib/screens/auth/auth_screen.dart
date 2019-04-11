@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_fragment.dart';
-import 'package:flutter_firebase_app/services/auth_service.dart';
+import 'package:flutter_firebase_app/constants/routes.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_view.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 
 // Inherited widget
 // https://medium.com/flutter-community/widget-state-buildcontext-inheritedwidget-898d671b7956
@@ -19,7 +21,7 @@ class _StateProvider extends InheritedWidget {
     @required this.state,
   }) : super(key: key, child: child);
 
-  final AuthActivityState state;
+  final AuthScreenState state;
 
   @override
   bool updateShouldNotify(_StateProvider oldWidget) {
@@ -27,11 +29,16 @@ class _StateProvider extends InheritedWidget {
   }
 }
 
-class AuthActivity extends StatefulWidget {
-  @override
-  AuthActivityState createState() => AuthActivityState();
+class AuthScreen extends StatefulWidget {
+  final Auth auth;
+  final FirebaseUserCallback signIn;
 
-  static AuthActivityState of([BuildContext context, bool rebuild = true]) {
+  AuthScreen({@required this.auth, @required this.signIn});
+
+  @override
+  AuthScreenState createState() => AuthScreenState();
+
+  static AuthScreenState of([BuildContext context, bool rebuild = true]) {
     return (rebuild
             ? context.inheritFromWidgetOfExactType(_StateProvider)
                 as _StateProvider
@@ -41,11 +48,11 @@ class AuthActivity extends StatefulWidget {
   }
 }
 
-class AuthActivityState extends State<AuthActivity> {
-  /// Authentication service/provider instance
-  final AuthService _authService = AuthService();
-
-  AuthService get authService => _authService;
+class AuthScreenState extends State<AuthScreen> {
+  void handleSignIn(FirebaseUser user) async {
+    await super.widget.signIn(user);
+    Navigator.of(context).pushReplacementNamed(Routes.home);
+  }
 
   /// List of Widgets
   List<Widget> _fragments = <Widget>[AuthFragment()];
