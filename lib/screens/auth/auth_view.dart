@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/components/rounded_button_black.dart';
+import 'package:flutter_firebase_app/components/rounded_button.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 import 'package:flutter_firebase_app/screens/auth/login_view.dart';
 import 'package:flutter_firebase_app/screens/auth/register_view.dart';

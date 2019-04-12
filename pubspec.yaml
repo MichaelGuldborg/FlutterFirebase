@@ -21,8 +21,11 @@ dependencies:
     sdk: flutter
   firebase_auth: 0.7.0 # Version 0.8.4 uses androidx
   firebase_database: 1.0.3 # Version 2.0.2 uses newer firebase core than auth 0.7.0
+  firebase_storage: 1.0.4 # Version 2.1.0 uses androidx
+
   google_sign_in: 3.2.4
   image_picker: 0.4.10 # TODO config iOS https://pub.dartlang.org/packages/image_picker
+  cached_network_image: ^0.7.0 # missing path_provider.dart
   font_awesome_flutter: ^8.4.0
 
 dev_dependencies:
