@@ -13,16 +13,13 @@ class EventScreen extends StatefulWidget {
 }
 
 class EventScreenState extends State<EventScreen> {
-  final DatabaseReference _eventRef =
-      FirebaseDatabase.instance.reference().child('events');
-  DatabaseError _error;
+  final DatabaseReference _eventRef = FirebaseDatabase.instance.reference().child('events');
 
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final FirebaseUser currentUser = AppState.of(context).currentUser;
-
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -54,8 +51,7 @@ class EventScreenState extends State<EventScreen> {
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 query: _eventRef,
                 controller: _scrollController,
-                sort: (DataSnapshot a, DataSnapshot b) =>
-                    b.key.compareTo(b.key),
+                sort: (DataSnapshot a, DataSnapshot b) => b.key.compareTo(b.key),
                 itemBuilder: (BuildContext context, DataSnapshot snapshot,
                     Animation<double> animation, int index) {
                   return _eventView(snapshot);
@@ -81,10 +77,7 @@ class EventScreenState extends State<EventScreen> {
         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         child: Row(children: [
           Container(
-              width: 100,
-              height: 100,
-              margin: EdgeInsets.only(right: 8.0),
-              color: Colors.grey),
+              width: 100, height: 100, margin: EdgeInsets.only(right: 8.0), color: Colors.grey),
           Expanded(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +91,6 @@ class EventScreenState extends State<EventScreen> {
         ]),
       );
 
-  Widget _eventViewText(String text) => Expanded(
-      child: Container(alignment: Alignment.centerLeft, child: Text(text)));
+  Widget _eventViewText(String text) =>
+      Expanded(child: Container(alignment: Alignment.centerLeft, child: Text(text)));
 }

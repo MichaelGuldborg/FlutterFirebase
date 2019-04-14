@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
-import 'package:flutter_firebase_app/screens/auth/reset_password_view.dart';
+import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
+import 'package:flutter_firebase_app/apps/auth/reset_password_screen.dart';
 
-class LoginView extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(child: LoginForm(context)));
   }
 
   Widget LoginForm(BuildContext context) {
-    final AuthScreenState state = AuthScreenState.of(context, false);
+    final AuthAppState state = AuthAppState.of(context, false);
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
 

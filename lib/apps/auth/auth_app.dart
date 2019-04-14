@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/apps/auth/auth_screen.dart';
+import 'package:flutter_firebase_app/apps/auth/login_screen.dart';
+import 'package:flutter_firebase_app/apps/auth/register_screen.dart';
+import 'package:flutter_firebase_app/apps/auth/reset_password_screen.dart';
+import 'package:flutter_firebase_app/apps/splash_screen.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/main.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_view.dart';
-import 'package:flutter_firebase_app/screens/auth/login_view.dart';
-import 'package:flutter_firebase_app/screens/auth/register_view.dart';
-import 'package:flutter_firebase_app/screens/auth/reset_password_view.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
 // Inherited widget
@@ -25,7 +26,7 @@ class _StateProvider extends InheritedWidget {
     @required this.state,
   }) : super(key: key, child: child);
 
-  final AuthScreenState state;
+  final AuthAppState state;
 
   @override
   bool updateShouldNotify(_StateProvider oldWidget) {
@@ -33,13 +34,20 @@ class _StateProvider extends InheritedWidget {
   }
 }
 
-class AuthScreen extends StatefulWidget {
-  @override
-  AuthScreenState createState() => AuthScreenState();
+class AuthAppRoutes {
+  static const auth = "auth/";
+  static const login = "login/";
+  static const register = "register/";
+  static const reset_password = "reset_password/";
 }
 
-class AuthScreenState extends State<AuthScreen> {
-  static AuthScreenState of([BuildContext context, bool rebuild = true]) {
+class AuthApp extends StatefulWidget {
+  @override
+  AuthAppState createState() => AuthAppState();
+}
+
+class AuthAppState extends State<AuthApp> {
+  static AuthAppState of([BuildContext context, bool rebuild = true]) {
     return (rebuild
             ? context.inheritFromWidgetOfExactType(_StateProvider) as _StateProvider
             : context.ancestorWidgetOfExactType(_StateProvider) as _StateProvider)
@@ -62,15 +70,16 @@ class AuthScreenState extends State<AuthScreen> {
       child: MaterialApp(
         theme: ThemeData(
           pageTransitionsTheme: PageTransitionsTheme(builders: {
-            // TargetPlatform.iOS: CupertinoPageTransitionsBuilder(), // TODO CHECK iOS
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(), // TODO CHECK iOS
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        home: AuthView(),
+        initialRoute: "auth/",
         routes: <String, WidgetBuilder>{
-          "login/": (BuildContext context) => LoginView(),
-          "reset_password/": (BuildContext context) => ResetPasswordView(),
-          "register/": (BuildContext context) => RegisterView(),
+          "auth/": (BuildContext context) => AuthScreen(),
+          "login/": (BuildContext context) => LoginScreen(),
+          "register/": (BuildContext context) => RegisterScreen(),
+          "reset_password/": (BuildContext context) => ResetPasswordScreen(),
         },
       ),
     );

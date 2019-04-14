@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
@@ -18,10 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void handleNavigation() async {
-    final AppState state = AppState.of(context);
+
     final currentUser = await Auth().getCurrentUser();
+    final AppState state = AppState.of(context);
     state.updateCurrentUser(currentUser);
-    final String route = currentUser == null ? Routes.auth : Routes.home;
+    final route = currentUser == null ? Routes.auth : Routes.home;
     Navigator.of(context).pushReplacementNamed(route);
   }
 
@@ -35,15 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(Routes.auth);
-                },
-                child: SizedBox(
-                  height: deviceSize.height / 8,
-                  width: deviceSize.width / 2,
-                  child: FlutterLogo(),
-                ),
+              SizedBox(
+                height: deviceSize.height / 8,
+                width: deviceSize.width / 2,
+                child: FlutterLogo(),
               ),
             ],
           ),

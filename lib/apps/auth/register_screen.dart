@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(child: RegisterForm(context)));
   }
 
   Widget RegisterForm(BuildContext context) {
-    final AuthScreenState state = AuthScreenState.of(context, false);
+    final AuthAppState state = AuthAppState.of(context, false);
     final _usernameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();

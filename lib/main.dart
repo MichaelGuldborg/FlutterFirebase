@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
+import 'package:flutter_firebase_app/apps/chat/chat_screen.dart';
+import 'package:flutter_firebase_app/apps/event/event_edit_screen.dart';
+import 'package:flutter_firebase_app/apps/event/event_screen.dart';
+import 'package:flutter_firebase_app/apps/settings/settings_screen.dart';
+import 'package:flutter_firebase_app/apps/splash_screen.dart';
 import 'package:flutter_firebase_app/constants/routes.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
-import 'package:flutter_firebase_app/screens/chat/chat_screen.dart';
-import 'package:flutter_firebase_app/screens/event/event_edit_screen.dart';
-import 'package:flutter_firebase_app/screens/event/event_screen.dart';
-import 'package:flutter_firebase_app/screens/settings/settings_screen.dart';
-import 'package:flutter_firebase_app/screens/splash_screen.dart';
 
 void main() => runApp(App());
 
@@ -33,20 +33,17 @@ class App extends StatefulWidget {
 // TODO change to _AppState.of(context) pattern
 class AppState extends State<App> {
   static AppState of([BuildContext context]) {
-    final provider = context.ancestorWidgetOfExactType(_AppStateProvider)
-        as _AppStateProvider;
+    final provider = context.ancestorWidgetOfExactType(_AppStateProvider) as _AppStateProvider;
     return provider.state;
   }
 
-  FirebaseUser currentUser;
+  FirebaseUser _currentUser;
+
+  FirebaseUser get currentUser => _currentUser;
 
   void updateCurrentUser(FirebaseUser user) async {
-    if (user == null) {
-      return;
-    }
-
     setState(() {
-      currentUser = user;
+      _currentUser = user;
     });
   }
 
@@ -55,13 +52,11 @@ class AppState extends State<App> {
     return _AppStateProvider(
       state: this,
       child: MaterialApp(
-        theme: ThemeData(
-          backgroundColor: Colors.transparent
-        ),
+        theme: ThemeData(backgroundColor: Colors.transparent),
         initialRoute: Routes.splash,
         routes: <String, WidgetBuilder>{
           Routes.splash: (BuildContext context) => SplashScreen(),
-          Routes.auth: (BuildContext context) => AuthScreen(),
+          Routes.auth: (BuildContext context) => AuthApp(),
           Routes.home: (BuildContext context) => EventScreen(),
           Routes.settings: (BuildContext context) => SettingsScreen(),
           Routes.chat: (BuildContext context) => ChatView(chatId: 'chatIdtemp'),
