@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
+import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 
 class RegisterView extends StatelessWidget {
@@ -39,9 +40,7 @@ class RegisterView extends StatelessWidget {
               text: "Register",
               onPressed: () async {
                 final user = await state.auth.signUpWithEmail(
-                    _usernameController.text,
-                    _emailController.text,
-                    _passwordController.text);
+                    _usernameController.text, _emailController.text, _passwordController.text);
                 state.handleSignIn(user);
               }),
         ],

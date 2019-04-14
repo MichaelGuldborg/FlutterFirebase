@@ -1,8 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
-import 'package:flutter_firebase_app/screens/auth/login_view.dart';
-import 'package:flutter_firebase_app/screens/auth/register_view.dart';
 
 class AuthView extends StatelessWidget {
   @override
@@ -38,19 +37,9 @@ class AuthView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 RoundedButton(
-                  text: "signInAnonymously",
-                  onPressed: () async {
-                    // final uid = await _authService.signInAnonymously();
-                    // if (uid != null) {
-                    state.handleSignIn(null);
-                    // }
-                  },
-                ),
-                SizedBox(height: 16),
-                RoundedButton(
                   text: "Login",
                   onPressed: () {
-                    state.navigateTo(LoginView());
+                    Navigator.of(context).pushNamed("login/");
                   },
                 ),
                 SizedBox(height: 16),
@@ -66,7 +55,7 @@ class AuthView extends StatelessWidget {
                   transparent: true,
                   text: "Register",
                   onPressed: () {
-                    state.navigateTo(RegisterView());
+                    Navigator.of(context).pushNamed("register/");
                   },
                 ),
                 SizedBox(height: 32),
