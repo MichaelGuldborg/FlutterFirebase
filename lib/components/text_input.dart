@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
 
-class TextInput extends StatefulWidget {
-  const TextInput();
+class TextInput extends StatelessWidget {
+  final String hintText;
+  final bool obscureText;
+  final TextInputType textInputType;
+  final controller;
+  final Future<void> Function(String text) onChanged;
 
-  @override
-  _TextInputState createState() => _TextInputState();
-}
+  const TextInput({Key key,
+    this.hintText,
+    this.obscureText = false,
+    this.textInputType = TextInputType.text,
+    this.controller,
+    this.onChanged,
+  })
+      : super(key: key);
 
-class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 16.0),
       child: TextField(
-        onSubmitted: (text) {},
+        keyboardType: textInputType,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(color: Colors.grey),
+          enabledBorder: UnderlineInputBorder(borderSide: new BorderSide(color: Colors.black26)),
+          contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+        ),
+        controller: controller,
+        onChanged: onChanged,
       ),
     );
   }

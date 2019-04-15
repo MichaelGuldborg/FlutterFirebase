@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthAppState state = AuthAppState.of(context, false);
     final _emailController = TextEditingController();
-    String errorText = null;
+    String errorText;
 
     return Scaffold(
       body: Container(
@@ -24,7 +23,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   return;
                 }
 
-                state.auth.sendPasswordResetEmail(email);
+                auth.sendPasswordResetEmail(email);
               },
             ),
           )),

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/main.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 
 class EventEditScreen extends StatefulWidget {
   @override
@@ -35,7 +35,7 @@ class _EventEditScreenState extends State<EventEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseUser currentUser = AppState.of(context).currentUser;
+    final FirebaseUser currentUser = auth.currentUser;
 
     return Scaffold(
       appBar: AppBar(

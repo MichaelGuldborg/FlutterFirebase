@@ -1,6 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
@@ -19,11 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void handleNavigation() async {
-
-    final currentUser = await Auth().getCurrentUser();
-    final AppState state = AppState.of(context);
-    state.updateCurrentUser(currentUser);
-    final route = currentUser == null ? Routes.auth : Routes.home;
+    FirebaseUser currentUser = await auth.getCurrentUser();
+    final route = currentUser == null ? AppRoutes.auth : AppRoutes.dashboard;
     Navigator.of(context).pushReplacementNamed(route);
   }
 

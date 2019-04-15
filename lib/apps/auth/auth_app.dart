@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/apps/auth/auth_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/login_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/register_screen.dart';
+import 'package:flutter_firebase_app/apps/auth/register_zip_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/reset_password_screen.dart';
-import 'package:flutter_firebase_app/apps/splash_screen.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/main.dart';
-import 'package:flutter_firebase_app/services/auth.dart';
 
 // Inherited widget
 // https://medium.com/flutter-community/widget-state-buildcontext-inheritedwidget-898d671b7956
@@ -19,26 +17,30 @@ auth_widget
   register_view
  */
 
-class _StateProvider extends InheritedWidget {
-  _StateProvider({
+/*
+abstract class AppStateHandler {
+  void handleSignIn(FirebaseUser user);
+
+  AppStateHandler of(BuildContext context) {
+    return (context.ancestorWidgetOfExactType(AppStateHandler) as AppStateHandler);
+  }
+}
+
+ */
+
+class _AuthAppProvider extends InheritedWidget {
+  final AuthAppState state;
+
+  _AuthAppProvider({
     Key key,
     @required Widget child,
     @required this.state,
   }) : super(key: key, child: child);
 
-  final AuthAppState state;
-
   @override
-  bool updateShouldNotify(_StateProvider oldWidget) {
+  bool updateShouldNotify(_AuthAppProvider oldWidget) {
     return true;
   }
-}
-
-class AuthAppRoutes {
-  static const auth = "auth/";
-  static const login = "login/";
-  static const register = "register/";
-  static const reset_password = "reset_password/";
 }
 
 class AuthApp extends StatefulWidget {
@@ -46,26 +48,31 @@ class AuthApp extends StatefulWidget {
   AuthAppState createState() => AuthAppState();
 }
 
+class AuthAppRoutes {
+  static const auth = "auth/";
+  static const login = "login/";
+  static const reset_password = "reset_password/";
+
+  /// Register flow
+  static const register = "register/";
+  static const register_zip = "register_zip/";
+}
+
 class AuthAppState extends State<AuthApp> {
-  static AuthAppState of([BuildContext context, bool rebuild = true]) {
-    return (rebuild
-            ? context.inheritFromWidgetOfExactType(_StateProvider) as _StateProvider
-            : context.ancestorWidgetOfExactType(_StateProvider) as _StateProvider)
-        .state;
+  static AuthAppState of(BuildContext context) {
+    return (context.ancestorWidgetOfExactType(AuthAppState) as AuthAppState);
   }
 
   void handleSignIn(FirebaseUser user) async {
-    final state = AppState.of(context);
-    state.updateCurrentUser(user);
-    Navigator.of(context).pushReplacementNamed(Routes.home);
+    if (user == null) {
+      return;
+    }
+    Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
   }
-
-  /// Auth service
-  final Auth auth = Auth();
 
   @override
   Widget build(BuildContext context) {
-    return _StateProvider(
+    return _AuthAppProvider(
       state: this,
       child: MaterialApp(
         theme: ThemeData(
@@ -74,12 +81,13 @@ class AuthAppState extends State<AuthApp> {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        initialRoute: "auth/",
+        initialRoute: AuthAppRoutes.auth,
         routes: <String, WidgetBuilder>{
-          "auth/": (BuildContext context) => AuthScreen(),
-          "login/": (BuildContext context) => LoginScreen(),
-          "register/": (BuildContext context) => RegisterScreen(),
-          "reset_password/": (BuildContext context) => ResetPasswordScreen(),
+          AuthAppRoutes.auth: (BuildContext context) => AuthScreen(),
+          AuthAppRoutes.login: (BuildContext context) => LoginScreen(),
+          AuthAppRoutes.reset_password: (BuildContext context) => ResetPasswordScreen(),
+          AuthAppRoutes.register: (BuildContext context) => RegisterScreen(),
+          AuthAppRoutes.register_zip: (BuildContext context) => RegisterZipScreen(),
         },
       ),
     );

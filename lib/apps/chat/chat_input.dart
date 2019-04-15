@@ -28,7 +28,7 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   fetchCurrentUser() async {
-    currentUser = await Auth().getCurrentUser();
+    currentUser = await AuthService().getCurrentUser();
   }
 
   void _handleSubmit(text) async {

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/constants/routes.dart';
 import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,25 +18,26 @@ class EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseUser currentUser = AppState.of(context).currentUser;
+    final FirebaseUser currentUser = auth.currentUser;
+
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           FlatButton(
               child: Text("chat", style: TextStyle(color: Colors.white)),
               onPressed: () async {
-                Navigator.of(context).pushNamed(Routes.chat);
+                Navigator.of(context).pushNamed(AppRoutes.chat);
               }),
           FlatButton(
               child: Text("logout", style: TextStyle(color: Colors.white)),
               onPressed: () async {
-                await Auth().signOut();
-                Navigator.of(context).pushReplacementNamed(Routes.auth);
+                await AuthService().signOut();
+                Navigator.of(context).pushReplacementNamed(AppRoutes.auth);
               }),
           IconButton(
             icon: Icon(FontAwesomeIcons.user, color: Colors.white),
             onPressed: () {
-              Navigator.of(context).pushNamed(Routes.settings);
+              Navigator.of(context).pushNamed(AppRoutes.settings);
             },
           )
         ],
@@ -64,7 +64,7 @@ class EventScreenState extends State<EventScreen> {
       persistentFooterButtons: <Widget>[Text('Welcome ${currentUser?.email}!')],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.event);
+          Navigator.of(context).pushNamed(AppRoutes.event);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),

@@ -6,36 +6,36 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 typedef FirebaseUserCallback = void Function(FirebaseUser);
 
-class Auth {
+class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseUser _currentUser;
 
-  // final GoogleSignIn _googleSignIn = GoogleSignIn();
+  FirebaseUser get currentUser => _currentUser;
 
   Future<FirebaseUser> signInAnonymously() async {
-    return await _firebaseAuth.signInAnonymously();
+    _currentUser = await _firebaseAuth.signInAnonymously();
+    return _currentUser;
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
     // TODO Google requires sha-1 config
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    return await _firebaseAuth.signInWithCredential(credential);
+    _currentUser = await _firebaseAuth.signInWithCredential(credential);
+    return _currentUser;
   }
 
   Future<FirebaseUser> signInWithEmail(String email, String password) async {
-    return await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    return await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future<FirebaseUser> signUpWithEmail(
-      String username, String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<FirebaseUser> signUpWithEmail(String username, String email, String password) async {
+    FirebaseUser user =
+        await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 
     /// Update displayName
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
@@ -44,15 +44,12 @@ class Auth {
 
     /// Update database
     final FirebaseDatabase _database = FirebaseDatabase.instance;
-    _database
-        .reference()
-        .child("users")
-        .child(user.uid)
-        .update(<String, String>{
+    _database.reference().child("users").child(user.uid).update(<String, String>{
       'username': username,
     });
 
-    return user;
+    _currentUser = user;
+    return _currentUser;
   }
 
   Future<void> sendPasswordResetEmail(email) async {
@@ -60,11 +57,13 @@ class Auth {
   }
 
   Future<void> signOut() async {
+    _currentUser = null;
     return _firebaseAuth.signOut();
   }
 
   Future<FirebaseUser> getCurrentUser() async {
-    return await _firebaseAuth.currentUser();
+    _currentUser = await _firebaseAuth.currentUser();
+    return _currentUser;
   }
 
   Future<void> sendEmailVerification() async {
@@ -77,3 +76,5 @@ class Auth {
     return user.isEmailVerified;
   }
 }
+
+final AuthService auth = AuthService();

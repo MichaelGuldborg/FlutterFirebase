@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
 import 'package:flutter_firebase_app/apps/settings/firebase_image_picker.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
 import 'package:flutter_firebase_app/main.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -16,8 +16,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = AppState.of(context);
-    final FirebaseUser currentUser = AppState.of(context).currentUser;
+    final FirebaseUser currentUser = auth.currentUser;
     final displayName = currentUser.displayName == null ? "" : currentUser.displayName;
     final email = currentUser.email == null ? "" : currentUser.email;
     final phoneNumber = currentUser.phoneNumber == null ? "" : currentUser.phoneNumber;
@@ -47,8 +46,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: RoundedButton(
                   text: "Logout",
                   onPressed: () {
-                    state.updateCurrentUser(null);
-                    Navigator.of(context).pop();
+                    auth.signOut();
+                    Navigator.of(context).pushReplacementNamed(AppRoutes.auth);
                   },
                 ),
               ),

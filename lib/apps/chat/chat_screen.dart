@@ -7,6 +7,7 @@ import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/models/message.dart';
 import 'package:flutter_firebase_app/apps/chat/chat_input.dart';
 import 'package:flutter_firebase_app/apps/chat/message_view.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 
 class ChatView extends StatefulWidget {
   final String chatId;
@@ -18,8 +19,7 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
-  final DatabaseReference _messagesRef =
-      FirebaseDatabase.instance.reference().child('messages');
+  final DatabaseReference _messagesRef = FirebaseDatabase.instance.reference().child('messages');
 
   List<Message> _messageList = List<Message>();
   StreamSubscription<Event> addSubscription;
@@ -43,7 +43,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseUser currentUser = AppState.of(context).currentUser;
+    final currentUser = auth.currentUser;
 
     return Scaffold(
         appBar: AppBar(
@@ -87,8 +87,7 @@ class _ChatViewState extends State<ChatView> {
                 controller: _scrollController,
                 itemBuilder: (_, int index) => MessageView(
                     text: _messageList[index].text,
-                    isMe: _messageList[index].author.uid ==
-                        currentUser?.uid),
+                    isMe: _messageList[index].author.uid == currentUser?.uid),
                 itemCount: _messageList.length,
               ),
             ),
