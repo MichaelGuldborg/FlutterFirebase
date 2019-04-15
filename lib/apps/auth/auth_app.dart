@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/apps/auth/auth_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/login_screen.dart';
+import 'package:flutter_firebase_app/apps/auth/register_address_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/register_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/register_zip_screen.dart';
 import 'package:flutter_firebase_app/apps/auth/reset_password_screen.dart';
@@ -53,9 +54,10 @@ class AuthAppRoutes {
   static const login = "login/";
   static const reset_password = "reset_password/";
 
-  /// Register flow
+  /// Register
   static const register = "register/";
   static const register_zip = "register_zip/";
+  static const register_address = "register_address/";
 }
 
 class AuthAppState extends State<AuthApp> {
@@ -88,6 +90,7 @@ class AuthAppState extends State<AuthApp> {
           AuthAppRoutes.reset_password: (BuildContext context) => ResetPasswordScreen(),
           AuthAppRoutes.register: (BuildContext context) => RegisterScreen(),
           AuthAppRoutes.register_zip: (BuildContext context) => RegisterZipScreen(),
+          AuthAppRoutes.register_address: (BuildContext context) => RegisterAddressScreen(),
         },
       ),
     );

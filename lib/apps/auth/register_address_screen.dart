@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
-class RegisterZipScreen extends StatefulWidget {
+class RegisterAddressScreen extends StatefulWidget {
   @override
-  _RegisterZipScreenState createState() => _RegisterZipScreenState();
+  _RegisterAddressScreenState createState() => _RegisterAddressScreenState();
 }
 
-class _RegisterZipScreenState extends State<RegisterZipScreen> {
-  // TODO AUTO COMPLETE
-  // https://stackoverflow.com/questions/43652460/flutter-textfield-autocomplete-overlay
-
-  final _zipController = TextEditingController();
+class _RegisterAddressScreenState extends State<RegisterAddressScreen> {
+  final _addressController = TextEditingController();
   List<String> suggestionList;
 
   @override
@@ -30,19 +26,21 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                   children: <Widget>[
                     SizedBox(height: 64),
                     Text(
-                      "Find postal code",
+                      dawa.postalName,
                       style:
                           TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 24),
                     ),
                     SizedBox(height: 16.0),
-                    Text("What is your postal code?"),
+                    Text("Search for your address"),
                     SizedBox(height: 64),
                     TextInput(
-                      hintText: "Enter your zip code",
-                      textInputType: TextInputType.number,
-                      controller: _zipController,
+                      hintText: "Enter your address",
+                      controller: _addressController,
                       onChanged: (String text) async {
-                        List<String> postalList = await dawa.getPostalAutoComplete(text);
+                        if (text.contains(",")) {
+                          return;
+                        }
+                        List<String> postalList = await dawa.getAddressAutoComplete(text);
                         setState(() {
                           suggestionList = postalList;
                         });
@@ -63,19 +61,20 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                     height: 50,
                     child: Builder(builder: (BuildContext context) {
                       return FlatButton(
-                        child: Text("Next"),
+                        child: Text("Search for address"),
                         textColor: Colors.white,
                         color: Colors.lightBlue,
-                        onPressed: () {
-                          final text = _zipController.text;
-                          if (text.length < 4) {
+                        onPressed: () async {
+                          final text = _addressController.text;
+                          if (!text.contains(",") || text.replaceAll(RegExp(r'\D'), "").isEmpty) {
                             Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text("Please enter a valid zip code"),
+                              content: Text("Please enter a valid address"),
                             ));
                             return;
                           }
-                          dawa.postalName = text;
-                          Navigator.of(context).pushNamed(AuthAppRoutes.register_address);
+
+                          // TODO save and navigate
+                          await dawa.getAddressList(text);
                         },
                       );
                     })),
@@ -96,7 +95,7 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                 title: Text(text),
                 dense: true,
                 onTap: () {
-                  _zipController.text = text;
+                  _addressController.text = text;
                   setState(() {
                     suggestionList = null;
                   });
