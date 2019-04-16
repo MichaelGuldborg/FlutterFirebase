@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_app.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
+import 'package:flutter_firebase_app/services/auth.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
 class PickAddressScreen extends StatefulWidget {
@@ -9,10 +11,17 @@ class PickAddressScreen extends StatefulWidget {
 
 class _PickAddressScreenState extends State<PickAddressScreen> {
   final _addressController = TextEditingController();
-  List<String> suggestionList;
+
+  List<String> addressList = dawa.addressList;
+
+  /*
+
+   */
 
   @override
   Widget build(BuildContext context) {
+    final AuthScreenState appState = AuthScreenState.of(context);
+
     return Scaffold(
         body: Center(
       child: Container(
@@ -26,27 +35,23 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
                   children: <Widget>[
                     SizedBox(height: 64),
                     Text(
-                      dawa.postalName,
+                      "Pick your address",
                       style:
                           TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 24),
                     ),
                     SizedBox(height: 16.0),
-                    Text("Pick your address"),
+                    Text("More than one address was found please pick from the list"),
                     SizedBox(height: 64),
-                    TextInput(
-                      hintText: "More than one address was found please pick from the list",
-                      controller: _addressController,
-                      onChanged: (String text) async {
-                        if (text.contains(",")) {
-                          return;
-                        }
-                        List<String> postalList = await dawa.getAddressAutoComplete(text);
-                        setState(() {
-                          suggestionList = postalList;
-                        });
-                      },
+                    Expanded(
+                      child: ListView(children:
+                        addressList
+                            .map((String text) =>
+                            ListTile(title: Text(text), dense: true, onTap: () {
+                              appState.handleSignIn(auth.currentUser);
+                            }))
+                            .toList()
+                      ),
                     ),
-                    suggestionList == null ? Container() : getTextWidgets(suggestionList),
                   ],
                 ),
               ),
@@ -65,16 +70,7 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
                         textColor: Colors.white,
                         color: Colors.lightBlue,
                         onPressed: () async {
-                          final text = _addressController.text;
-                          if (!text.contains(",") || text.replaceAll(RegExp(r'\D'), "").isEmpty) {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text("Please enter a valid address"),
-                            ));
-                            return;
-                          }
 
-                          // TODO save and navigate
-                          await dawa.getAddressList(text);
                         },
                       );
                     })),
@@ -84,22 +80,5 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
         ),
       ),
     ));
-  }
-
-  Widget getTextWidgets(List<String> strings) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: strings
-            .map((String text) => ListTile(
-                title: Text(text),
-                dense: true,
-                onTap: () {
-                  _addressController.text = text;
-                  setState(() {
-                    suggestionList = null;
-                  });
-                }))
-            .toList());
   }
 }

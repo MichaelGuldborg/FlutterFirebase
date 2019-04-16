@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
-class RegisterAddressScreen extends StatefulWidget {
+class SearchAddressScreen extends StatefulWidget {
   @override
-  _RegisterAddressScreenState createState() => _RegisterAddressScreenState();
+  _SearchAddressScreenState createState() => _SearchAddressScreenState();
 }
 
-class _RegisterAddressScreenState extends State<RegisterAddressScreen> {
+class _SearchAddressScreenState extends State<SearchAddressScreen> {
   final _addressController = TextEditingController();
   List<String> suggestionList;
 
@@ -73,8 +74,9 @@ class _RegisterAddressScreenState extends State<RegisterAddressScreen> {
                             return;
                           }
 
-                          // TODO save and navigate
-                          await dawa.getAddressList(text);
+                          dawa.addressList = await dawa.getAddressList(text);
+                          Navigator.of(context).pushNamed(AuthAppRoutes.pick_address);
+
                         },
                       );
                     })),

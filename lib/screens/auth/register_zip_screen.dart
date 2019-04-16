@@ -75,7 +75,7 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                             return;
                           }
                           dawa.postalName = text;
-                          Navigator.of(context).pushNamed(AuthAppRoutes.register_address);
+                          Navigator.of(context).pushNamed(AuthAppRoutes.search_address);
                         },
                       );
                     })),
