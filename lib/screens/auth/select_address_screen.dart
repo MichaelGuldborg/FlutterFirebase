@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_app.dart';
-import 'package:flutter_firebase_app/components/text_input.dart';
-import 'package:flutter_firebase_app/services/auth.dart';
+import 'package:flutter_firebase_app/components/rounded_card.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
 class PickAddressScreen extends StatefulWidget {
@@ -20,7 +19,7 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthScreenState appState = AuthScreenState.of(context);
+    final AuthWidgetState appState = AuthWidgetState.of(context);
 
     return Scaffold(
         body: Center(
@@ -43,39 +42,23 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
                     Text("More than one address was found please pick from the list"),
                     SizedBox(height: 64),
                     Expanded(
-                      child: ListView(children:
-                        addressList
-                            .map((String text) =>
-                            ListTile(title: Text(text), dense: true, onTap: () {
-                              appState.handleSignIn(auth.currentUser);
-                            }))
-                            .toList()
-                      ),
+                      child: ListView(
+                          children: addressList
+                              .map((String text) => RoundedCard(
+                                    title: text,
+                                    subTitle: dawa.postalName,
+                                    onPress: () {
+                                      // Handle address picked
+                                      print("Address");
+                                      print(text);
+                                    },
+                                  ))
+                              .toList()),
                     ),
                   ],
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                    width: double.maxFinite,
-                    height: 50,
-                    child: Builder(builder: (BuildContext context) {
-                      return FlatButton(
-                        child: Text("Search for address"),
-                        textColor: Colors.white,
-                        color: Colors.lightBlue,
-                        onPressed: () async {
-
-                        },
-                      );
-                    })),
-              ],
-            )
           ],
         ),
       ),

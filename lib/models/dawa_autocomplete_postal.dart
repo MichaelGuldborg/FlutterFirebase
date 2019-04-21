@@ -1,29 +1,16 @@
-class DawaPostalResponse {
+import 'package:flutter_firebase_app/models/dawa_postal.dart';
+
+class DawaAutoCompletePostal {
   final String tekst;
   final DawaPostal postnummer;
 
-  DawaPostalResponse({this.tekst, this.postnummer});
+  DawaAutoCompletePostal({this.tekst, this.postnummer});
 
-  factory DawaPostalResponse.fromJson(Map<String, dynamic> json) {
-    return new DawaPostalResponse(
+  factory DawaAutoCompletePostal.fromJson(Map<String, dynamic> json) {
+    return DawaAutoCompletePostal(
       tekst: json['tekst'],
       postnummer: DawaPostal.fromJson(json['postnummer']),
     );
   }
 }
 
-class DawaPostal {
-  final String href;
-  final String nr;
-  final String navn;
-
-  DawaPostal({this.href, this.nr, this.navn});
-
-  factory DawaPostal.fromJson(Map<String, dynamic> json) {
-    return new DawaPostal(
-      href: json['href'],
-      nr: json['nr'],
-      navn: json['navn'],
-    );
-  }
-}

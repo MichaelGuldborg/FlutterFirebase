@@ -1,25 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/screens/dashboard/dashboard_button.dart';
+import 'package:flutter_firebase_app/components/rounded_card.dart';
 
-class DashboardScreen extends StatelessWidget {
+class BulletinScreen extends StatelessWidget {
+  final labels = ["Ulæste", "Bestyrelsen", "Alle"];
+
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      children: <Widget>[
-        DashboardButton(
-          title: "Opslagstavlen",
-          status: "Aktiv 28. feb.",
-          onPress: () {
-            Navigator.of(context).pushNamed("second");
-          },
+    return DefaultTabController(
+      length: labels.length,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Container(
+            color: Colors.white,
+            child: TabBar(
+              tabs: labels.map((text) => _tabButton(text)).toList(),
+            ),
+          ),
         ),
-        DashboardButton(title: "Skader", status: "1 aktuelle"),
-        DashboardButton(title: "Kontaktbog", status: "6 kontakter"),
-        DashboardButton(title: "Arkiv", status: "9 dokumenter"),
-        DashboardButton(title: "Beboere", status: "3 beboere"),
-        DashboardButton(title: "Vedligehold", status: "0 aktuelle"),
-      ],
+        body: TabBarView(
+          children: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  RoundedCard(
+                    title: "Velkommen til Minejendom!",
+                    subTitle: "MinEjendom",
+                    date: "28. feb",
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.directions_transit),
+            Icon(Icons.directions_bike),
+          ],
+        ),
+      ),
     );
   }
+
+  Widget _tabButton(text) => Container(
+      height: kToolbarHeight,
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.black),
+      ));
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
@@ -14,7 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthAppState appState = AuthAppState.of(context);
+    final AuthWidgetState appState = AuthWidgetState.of(context);
     final _usernameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _emailController.text, _passwordController.text);
                       // appState.handleSignIn(user);
                        */
-                      Navigator.of(context).pushNamed(AuthAppRoutes.register_zip);
+                      Navigator.of(context).pushNamed(AuthWidgetRoutes.register_zip);
                     },
                   ),
                 ),

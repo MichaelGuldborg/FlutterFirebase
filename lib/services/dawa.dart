@@ -1,12 +1,14 @@
 import 'dart:convert' as convert;
 
 import 'package:flutter_firebase_app/models/dawa_address.dart';
-import 'package:flutter_firebase_app/models/dawa_postal.dart';
+import 'package:flutter_firebase_app/models/dawa_autocomplete_address.dart';
+import 'package:flutter_firebase_app/models/dawa_autocomplete_postal.dart';
 import 'package:http/http.dart' as http;
 
 class DawaService {
   String postalName;
   String address;
+  List<String> addressList;
 
   Future<List<String>> getPostalAutoComplete(String text) async {
     final number = text.length < 4 ? text : text.substring(0, 4);
@@ -19,7 +21,7 @@ class DawaService {
 
     List responseList = convert.jsonDecode(response.body) as List;
     List<String> postalList =
-        responseList.map((item) => DawaPostalResponse.fromJson(item).tekst).toList();
+        responseList.map((item) => DawaAutoCompletePostal.fromJson(item).tekst).toList();
     postalList.removeWhere((suggestion) => text.contains(suggestion));
     return postalList;
   }
@@ -35,7 +37,7 @@ class DawaService {
 
     List responseList = convert.jsonDecode(response.body) as List;
     List<String> addressList =
-        responseList.map((item) => DawaAddressResponse.fromJson(item).tekst).toList();
+        responseList.map((item) => DawaAutoCompleteAddress.fromJson(item).tekst).toList();
     addressList.removeWhere((suggestion) => text.contains(suggestion));
     return addressList;
   }
@@ -50,22 +52,23 @@ class DawaService {
     }
 
     List responseList = convert.jsonDecode(response.body) as List;
-    print("responseList");
 
-    // TODO convert to String Array
-    print(responseList);
-
-    /*
     List<String> addressList =
-    responseList.map((item) => DawaAddressResponse.fromJson(item).tekst).toList();
-    addressList.removeWhere((suggestion) => text.contains(suggestion));
+        responseList.map((item) => DawaAddress.fromJson(item).label).toList();
+
+    // Sort list
+    addressList.sort((a, b) {
+      if(!a.contains(",") || !b.contains(",")){
+        return 0;
+      }
+
+      String aFloor = a.substring(a.indexOf(",")).replaceAll("st", "0").replaceAll(RegExp("\\D"), "");
+      String bFloor = b.substring(a.indexOf(",")).replaceAll("st", "0").replaceAll(RegExp("\\D"), "");
+      return int.parse(aFloor) - int.parse(bFloor);
+    });
+
     return addressList;
-     */
   }
-
-
-
-
 }
 
 final dawa = DawaService();

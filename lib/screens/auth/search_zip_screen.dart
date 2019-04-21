@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
+import 'package:flutter_firebase_app/components/suggestion_list_view.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
 class RegisterZipScreen extends StatefulWidget {
@@ -41,14 +42,14 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                       hintText: "Enter your zip code",
                       textInputType: TextInputType.number,
                       controller: _zipController,
-                      onChanged: (String text) async {
+                      onChanged: (text) async {
                         List<String> postalList = await dawa.getPostalAutoComplete(text);
                         setState(() {
                           suggestionList = postalList;
                         });
                       },
                     ),
-                    suggestionList == null ? Container() : getTextWidgets(suggestionList),
+                    SuggetionListView(_zipController, suggestionList),
                   ],
                 ),
               ),
@@ -66,7 +67,7 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                         child: Text("Next"),
                         textColor: Colors.white,
                         color: Colors.lightBlue,
-                        onPressed: () {
+                        onPressed: () async {
                           final text = _zipController.text;
                           if (text.length < 4) {
                             Scaffold.of(context).showSnackBar(SnackBar(
@@ -74,8 +75,12 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                             ));
                             return;
                           }
-                          dawa.postalName = text;
-                          Navigator.of(context).pushNamed(AuthAppRoutes.search_address);
+
+                          // Fetch save and navigate
+                          final zipCode = text.substring(0, 4);
+                          List<String> postalList = await dawa.getPostalAutoComplete(zipCode);
+                          dawa.postalName = postalList[0];
+                          Navigator.of(context).pushNamed(AuthWidgetRoutes.search_address);
                         },
                       );
                     })),
@@ -86,21 +91,5 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
       ),
     ));
   }
-
-  Widget getTextWidgets(List<String> strings) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: strings
-            .map((String text) => ListTile(
-                title: Text(text),
-                dense: true,
-                onTap: () {
-                  _zipController.text = text;
-                  setState(() {
-                    suggestionList = null;
-                  });
-                }))
-            .toList());
-  }
 }
+

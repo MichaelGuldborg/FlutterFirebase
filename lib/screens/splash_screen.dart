@@ -9,16 +9,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     // Delay for visual effect
     Future.delayed(const Duration(seconds: 1), handleNavigation);
   }
 
+
   void handleNavigation() async {
     FirebaseUser currentUser = await auth.getCurrentUser();
+    print("currentUser");
+    print(currentUser);
     final route = currentUser == null ? AppRoutes.auth : AppRoutes.dashboard;
     Navigator.of(context).pushReplacementNamed(route);
   }

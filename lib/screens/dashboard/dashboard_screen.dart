@@ -1,53 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/screens/dashboard/dashboard_button.dart';
+import 'package:flutter_firebase_app/screens/dashboard/dashboard_widget.dart';
 
-class DashboardButton extends StatelessWidget {
-  final String title;
-  final String status;
-  final VoidCallback onPress;
-
-  const DashboardButton({
-    Key key,
-    @required this.title,
-    @required this.status,
-    this.onPress,
-  }) : super(key: key);
-
+class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: GestureDetector(
-        onTap: onPress,
-        child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0)),
-          elevation: 4, //10,
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("ICON"),
-                    Text("NOTICE"),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                    ),
-                    Text(status),
-                  ],
-                ),
-              ],
-            ),
+    return Scaffold(
+      body: GridView(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        children: <Widget>[
+          DashboardButton(
+            title: "Opslagstavlen",
+            status: "Aktiv 28. feb.",
+            onPress: () {
+              Navigator.of(context).pushNamed(DashboardWidgetRoutes.bulletin_screen);
+            },
           ),
-        ),
+          DashboardButton(title: "Skader", status: "1 aktuelle"),
+          DashboardButton(title: "Kontaktbog", status: "6 kontakter"),
+          DashboardButton(title: "Arkiv", status: "9 dokumenter"),
+          DashboardButton(title: "Beboere", status: "3 beboere"),
+          DashboardButton(title: "Vedligehold", status: "0 aktuelle"),
+        ],
       ),
     );
   }

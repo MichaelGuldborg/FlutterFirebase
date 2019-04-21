@@ -1,28 +1,37 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/main.dart';
-import 'package:flutter_firebase_app/screens/dashboard/dashboard_button.dart';
+import 'package:flutter_firebase_app/screens/dashboard/bulletin_screen.dart';
+import 'package:flutter_firebase_app/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Dashboard extends StatefulWidget {
-  @override
-  _DashboardState createState() => _DashboardState();
+// ignore: missing_const_final_var_or_type
+abstract class PageWidget extends StatefulWidget {
+
+
+
 }
 
-class _DashboardState extends State<Dashboard> {
+class DashboardWidget extends StatefulWidget {
+  @override
+  _DashboardWidgetState createState() => _DashboardWidgetState();
+}
+
+class DashboardWidgetRoutes {
+  static const bulletin_screen = "bulletin_screen/";
+}
+
+class _DashboardWidgetState extends State<DashboardWidget> {
+  final currentUser = auth.currentUser;
+
+  final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    final FirebaseUser currentUser = auth.currentUser;
-
-    final navigatorKey = new GlobalKey<NavigatorState>();
-
     return Scaffold(
       appBar: _appBar(navigatorKey),
-      persistentFooterButtons: <Widget>[Text('Welcome ${currentUser?.email}!')],
       body: MaterialApp(
         navigatorKey: navigatorKey,
-        color: Color(0xFFf5f6f8),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           pageTransitionsTheme: PageTransitionsTheme(builders: {
@@ -30,52 +39,26 @@ class _DashboardState extends State<Dashboard> {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        initialRoute: "initial",
+        initialRoute: "dashboard_screen",
         routes: <String, WidgetBuilder>{
-          "initial": (BuildContext context) => _dashboardScreen(context),
-          "second": (BuildContext context) => _secondRoute(context),
+          "dashboard_screen": (BuildContext context) => DashboardScreen(),
+          DashboardWidgetRoutes.bulletin_screen: (BuildContext context) => BulletinScreen(),
         },
       ),
     );
   }
 
-  Widget _secondRoute(context) => Container(
-        child: FlatButton(
-            child: Text("Back"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
-        color: Colors.cyan,
-      );
-
-  Widget _dashboardScreen(context) => GridView(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        children: <Widget>[
-          DashboardButton(
-            title: "Opslagstavlen",
-            status: "Aktiv 28. feb.",
-            onPress: () {
-              Navigator.of(context).pushNamed("second");
-            },
-          ),
-          DashboardButton(title: "Skader", status: "1 aktuelle"),
-          DashboardButton(title: "Kontaktbog", status: "6 kontakter"),
-          DashboardButton(title: "Arkiv", status: "9 dokumenter"),
-          DashboardButton(title: "Beboere", status: "3 beboere"),
-          DashboardButton(title: "Vedligehold", status: "0 aktuelle"),
-        ],
-      );
-
   Widget _appBar(GlobalKey<NavigatorState> key) => AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: FlatButton(
+        leading: IconButton(
+            icon: const BackButtonIcon(),
+            color: Colors.black,
             onPressed: () {
               if (key.currentState.canPop()) {
                 key.currentState.pop();
               }
-            },
-            child: Text("BACK")),
+            }),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Container(
@@ -88,13 +71,15 @@ class _DashboardState extends State<Dashboard> {
               )),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(FontAwesomeIcons.user, color: Colors.white),
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRoutes.settings);
-            },
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: IconButton(
+              icon: Icon(FontAwesomeIcons.user, color: Colors.black),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.settings);
+              },
+            ),
           )
         ],
       );
 }
-

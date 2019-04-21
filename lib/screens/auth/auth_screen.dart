@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_app.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
@@ -11,7 +11,7 @@ import 'package:flutter_firebase_app/services/auth.dart';
 class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthScreenState appState = AuthScreenState.of(context);
+    final AuthWidgetState appState = AuthWidgetState.of(context);
 
     return Scaffold(
       body: Column(
@@ -38,7 +38,7 @@ class AuthScreen extends StatelessWidget {
                 RoundedButton(
                   text: "Login",
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AuthAppRoutes.login);
+                    Navigator.of(context).pushNamed(AuthWidgetRoutes.login);
                   },
                 ),
                 SizedBox(height: 16),
@@ -54,7 +54,7 @@ class AuthScreen extends StatelessWidget {
                   transparent: true,
                   text: "Register",
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AuthAppRoutes.register);
+                    Navigator.of(context).pushNamed(AuthWidgetRoutes.register);
                   },
                 ),
                 SizedBox(height: 32),

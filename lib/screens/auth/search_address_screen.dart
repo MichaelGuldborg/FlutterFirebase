@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/apps/auth/auth_app.dart';
+import 'package:flutter_firebase_app/components/suggestion_list_view.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
 class SearchAddressScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
                         });
                       },
                     ),
-                    suggestionList == null ? Container() : getTextWidgets(suggestionList),
+                    SuggetionListView(_addressController, suggestionList),
                   ],
                 ),
               ),
@@ -67,7 +68,7 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
                         color: Colors.lightBlue,
                         onPressed: () async {
                           final text = _addressController.text;
-                          if (!text.contains(",") || text.replaceAll(RegExp(r'\D'), "").isEmpty) {
+                          if (text.replaceAll(RegExp(r"\D"), "").isEmpty) {
                             Scaffold.of(context).showSnackBar(SnackBar(
                               content: Text("Please enter a valid address"),
                             ));
@@ -75,8 +76,15 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
                           }
 
                           dawa.addressList = await dawa.getAddressList(text);
-                          Navigator.of(context).pushNamed(AuthAppRoutes.pick_address);
+                          if (dawa.addressList.isEmpty) {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text("We did not find any addresses that matched your search"),
+                            ));
+                            return;
+                          }
 
+                          Navigator.of(context).pushNamed(AuthWidgetRoutes.pick_address);
                         },
                       );
                     })),
@@ -86,22 +94,5 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
         ),
       ),
     ));
-  }
-
-  Widget getTextWidgets(List<String> strings) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: strings
-            .map((String text) => ListTile(
-                title: Text(text),
-                dense: true,
-                onTap: () {
-                  _addressController.text = text;
-                  setState(() {
-                    suggestionList = null;
-                  });
-                }))
-            .toList());
   }
 }

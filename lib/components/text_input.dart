@@ -26,7 +26,7 @@ class TextInput extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),
-          enabledBorder: UnderlineInputBorder(borderSide: new BorderSide(color: Colors.black26)),
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black26)),
           contentPadding: EdgeInsets.symmetric(vertical: 16.0),
         ),
         controller: controller,

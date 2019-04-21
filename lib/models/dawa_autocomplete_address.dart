@@ -1,11 +1,11 @@
-class DawaAddressResponse {
+class DawaAutoCompleteAddress {
   final String tekst;
   final DawaStreetName vejnavn;
 
-  DawaAddressResponse({this.tekst, this.vejnavn});
+  DawaAutoCompleteAddress({this.tekst, this.vejnavn});
 
-  factory DawaAddressResponse.fromJson(Map<String, dynamic> json) {
-    return DawaAddressResponse(
+  factory DawaAutoCompleteAddress.fromJson(Map<String, dynamic> json) {
+    return DawaAutoCompleteAddress(
       tekst: json['tekst'],
       vejnavn: DawaStreetName.fromJson(json['vejnavn']),
     );

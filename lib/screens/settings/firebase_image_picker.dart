@@ -69,6 +69,9 @@ class _FirebaseImagePickerState extends State<FirebaseImagePicker> {
       child: Container(
         width: widget.imageSize,
         height: widget.imageSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+        ),
         child: _loading
             ? _loadingIcon()
             : _imageUrl == null
