@@ -29,7 +29,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// fix image_picker dependency issue
+// Fix image_picker dependency issue
 subprojects {
     project.configurations.all {
         resolutionStrategy.eachDependency { details ->

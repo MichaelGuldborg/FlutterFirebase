@@ -19,7 +19,6 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthWidgetState appState = AuthWidgetState.of(context);
 
     return Scaffold(
         body: Center(

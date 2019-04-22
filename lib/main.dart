@@ -7,6 +7,9 @@ import 'package:flutter_firebase_app/screens/splash_screen.dart';
 
 void main() => runApp(App());
 
+
+// https://stackoverflow.com/questions/53672171/how-to-get-build-and-version-number-of-flutter-app
+
 class App extends StatefulWidget {
   State<App> createState() => AppState();
 }

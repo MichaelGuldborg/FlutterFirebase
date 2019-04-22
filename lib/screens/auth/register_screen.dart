@@ -14,7 +14,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthWidgetState appState = AuthWidgetState.of(context);
     final _usernameController = TextEditingController();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
@@ -119,11 +118,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textColor: Colors.white,
                     color: Colors.lightBlue,
                     onPressed: () async {
+
                       /*
-                      // TODO apply
                       final user = await auth.signUpWithEmail(_usernameController.text,
                           _emailController.text, _passwordController.text);
-                      // appState.handleSignIn(user);
                        */
                       Navigator.of(context).pushNamed(AuthWidgetRoutes.register_zip);
                     },

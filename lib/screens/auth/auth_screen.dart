@@ -6,12 +6,10 @@ import 'package:flutter_firebase_app/components/rounded_button.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
 // TODO Add version name in debug
-// https://stackoverflow.com/questions/53672171/how-to-get-build-and-version-number-of-flutter-app
 
 class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthWidgetState appState = AuthWidgetState.of(context);
 
     return Scaffold(
       body: Column(
@@ -46,7 +44,7 @@ class AuthScreen extends StatelessWidget {
                   text: "signInWithGoogle",
                   onPressed: () async {
                     final user = await auth.signInWithGoogle();
-                    appState.handleSignIn(user);
+                    // TODO
                   },
                 ),
                 SizedBox(height: 16),

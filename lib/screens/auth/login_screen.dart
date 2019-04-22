@@ -43,8 +43,7 @@ class LoginScreen extends StatelessWidget {
                   _emailController.text,
                   _passwordController.text,
                 );
-                final AuthWidgetState appState = AuthWidgetState.of(context);
-                appState.handleSignIn(user);
+                // TODO NAVIGATION
               }),
           FlatButton(
               onPressed: () {
