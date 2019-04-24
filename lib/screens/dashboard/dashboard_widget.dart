@@ -43,30 +43,17 @@ class DashboardWidgetState extends State<DashboardWidget> {
     });
   }
 
-  final List<String> _history = [DashboardWidgetRoutes.dashboard];
-  final routes = <String, Widget>{
-    DashboardWidgetRoutes.dashboard: DashboardScreen(),
-    DashboardWidgetRoutes.bulletin_list: BulletinScreen(),
-  };
-
-  get isInitialRoute => _history.length == 1;
-
-  void pushNamed(String name) {
-    if (!routes.containsKey(name)) {
-      throw FlutterError("Could not find route $name");
-    }
-
-    setState(() {
-      _history.add(name);
-    });
-  }
+  final navKey = GlobalKey<NavigatorState>();
+  final List<String> routeTitles = ["Dashboard"];
+  bool get isInitialRoute => routeTitles.length == 1;
 
   Future<bool> onBackPress() async {
     if (isInitialRoute) {
       return true;
     }
+    navKey.currentState.pop();
     setState(() {
-      _history.removeLast();
+      routeTitles.removeLast();
     });
     return false;
   }
@@ -79,13 +66,39 @@ class DashboardWidgetState extends State<DashboardWidget> {
         onWillPop: onBackPress,
         child: Scaffold(
           appBar: _appBar(),
-          body: AnimatedContainer(
-            duration: const Duration(seconds: 3),
-            curve: Curves.bounceIn,
-            child: routes[_history.last],
+          body: MaterialApp(
+            navigatorKey: navKey,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+              }),
+            ),
+            home: DashboardScreen(),
+            onGenerateRoute: onGenerateRoute,
           ),
         ),
       ),
+    );
+  }
+
+  final routes = <String, Widget>{
+    DashboardWidgetRoutes.bulletin_list: BulletinScreen(),
+  };
+
+  Route onGenerateRoute(RouteSettings settings) {
+    final String routeName = settings.name;
+    final String routeTitle = routeName;
+
+    Widget nextWidget = routes[routeName];
+    setState(() {
+      routeTitles.add(routeTitle);
+    });
+
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (BuildContext context) => nextWidget,
     );
   }
 
@@ -107,7 +120,7 @@ class DashboardWidgetState extends State<DashboardWidget> {
               height: 50,
               alignment: Alignment.centerLeft,
               child: Text(
-                _history.last,
+                routeTitles.last,
                 style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
               )),
         ),

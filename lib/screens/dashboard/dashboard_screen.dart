@@ -13,7 +13,7 @@ class DashboardScreen extends StatelessWidget {
             title: "Opslagstavlen",
             status: "Aktiv 28. feb.",
             onPress: () {
-              DashboardWidgetState.of(context).pushNamed(DashboardWidgetRoutes.bulletin_list);
+              Navigator.of(context).pushNamed(DashboardWidgetRoutes.bulletin_list);
             },
           ),
           DashboardButton(title: "Skader", status: "1 aktuelle"),
