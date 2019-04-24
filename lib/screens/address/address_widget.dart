@@ -9,22 +9,18 @@ import 'package:flutter_firebase_app/screens/address/search_address_screen.dart'
 import 'package:flutter_firebase_app/screens/address/search_zip_screen.dart';
 import 'package:flutter_firebase_app/screens/address/select_address_screen.dart';
 
-// Inherited widget
-// https://medium.com/flutter-community/widget-state-buildcontext-inheritedwidget-898d671b7956
-
-class AuthWidgetRoutes {
-  static const auth = "auth/";
-  static const login = "login/";
-  static const register = "register/";
-  static const reset_password = "reset_password/";
+class AddressWidgetRoutes {
+  static const register_zip = "register_zip";
+  static const search_address = "search_address";
+  static const pick_address = "pick_address";
 }
 
-class AuthWidget extends StatefulWidget {
+class AddressWidget extends StatefulWidget {
   @override
-  AuthWidgetState createState() => AuthWidgetState();
+  AddressWidgetState createState() => AddressWidgetState();
 }
 
-class AuthWidgetState extends State<AuthWidget> {
+class AddressWidgetState extends State<AddressWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,12 +30,11 @@ class AuthWidgetState extends State<AuthWidget> {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),
         }),
       ),
-      initialRoute: AuthWidgetRoutes.auth,
+      initialRoute: AddressWidgetRoutes.register_zip,
       routes: <String, WidgetBuilder>{
-        AuthWidgetRoutes.auth: (BuildContext context) => AuthScreen(),
-        AuthWidgetRoutes.login: (BuildContext context) => LoginScreen(),
-        AuthWidgetRoutes.reset_password: (BuildContext context) => ResetPasswordScreen(),
-        AuthWidgetRoutes.register: (BuildContext context) => RegisterScreen(),
+        AddressWidgetRoutes.register_zip: (BuildContext context) => RegisterZipScreen(),
+        AddressWidgetRoutes.search_address: (BuildContext context) => SearchAddressScreen(),
+        AddressWidgetRoutes.pick_address: (BuildContext context) => PickAddressScreen(),
       },
     );
   }

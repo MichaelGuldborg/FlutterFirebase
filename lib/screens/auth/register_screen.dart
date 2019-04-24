@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
@@ -123,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       final user = await auth.signUpWithEmail(_usernameController.text,
                           _emailController.text, _passwordController.text);
                        */
-                      Navigator.of(context).pushNamed(AuthWidgetRoutes.register_zip);
+                      AppNavigator.of(context).pushReplacementNamed(AppRoutes.address);
                     },
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/suggestion_list_view.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
+import 'package:flutter_firebase_app/screens/address/address_widget.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
@@ -84,7 +85,7 @@ class _SearchAddressScreenState extends State<SearchAddressScreen> {
                             return;
                           }
 
-                          Navigator.of(context).pushNamed(AuthWidgetRoutes.pick_address);
+                          Navigator.of(context).pushNamed(AddressWidgetRoutes.pick_address);
                         },
                       );
                     })),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/suggestion_list_view.dart';
 import 'package:flutter_firebase_app/components/text_input.dart';
+import 'package:flutter_firebase_app/screens/address/address_widget.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
@@ -80,7 +81,7 @@ class _RegisterZipScreenState extends State<RegisterZipScreen> {
                           final zipCode = text.substring(0, 4);
                           List<String> postalList = await dawa.getPostalAutoComplete(zipCode);
                           dawa.postalName = postalList[0];
-                          Navigator.of(context).pushNamed(AuthWidgetRoutes.search_address);
+                          Navigator.of(context).pushNamed(AddressWidgetRoutes.search_address);
                         },
                       );
                     })),

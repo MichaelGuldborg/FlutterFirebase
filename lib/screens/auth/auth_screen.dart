@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/components/rounded_button.dart';
+import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
 // TODO Add version name in debug
@@ -10,7 +10,6 @@ import 'package:flutter_firebase_app/services/auth.dart';
 class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

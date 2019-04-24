@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_card.dart';
+import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
 import 'package:flutter_firebase_app/services/dawa.dart';
 
@@ -47,9 +48,8 @@ class _PickAddressScreenState extends State<PickAddressScreen> {
                                     title: text,
                                     subTitle: dawa.postalName,
                                     onPress: () {
-                                      // Handle address picked
-                                      print("Address");
-                                      print(text);
+                                      print("Address: $text");
+                                      AppNavigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
                                     },
                                   ))
                               .toList()),

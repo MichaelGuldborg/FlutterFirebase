@@ -5,60 +5,101 @@ import 'package:flutter_firebase_app/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// ignore: missing_const_final_var_or_type
-abstract class PageWidget extends StatefulWidget {
+class DashboardWidgetRoutes {
+  static const dashboard = "Dashboard";
+  static const bulletin_list = "Bulletins";
+}
 
+class _DashboardStateProvider extends InheritedWidget {
+  final DashboardWidgetState state;
 
+  _DashboardStateProvider({this.state, child}) : super(child: child);
 
+  @override
+  bool updateShouldNotify(_DashboardStateProvider old) => false;
 }
 
 class DashboardWidget extends StatefulWidget {
   @override
-  _DashboardWidgetState createState() => _DashboardWidgetState();
+  DashboardWidgetState createState() => DashboardWidgetState();
 }
 
-class DashboardWidgetRoutes {
-  static const bulletin_screen = "bulletin_screen/";
-}
+class DashboardWidgetState extends State<DashboardWidget> {
+  static DashboardWidgetState of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(_DashboardStateProvider)
+            as _DashboardStateProvider)
+        .state;
+  }
 
-class _DashboardWidgetState extends State<DashboardWidget> {
-  final currentUser = auth.currentUser;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  final navigatorKey = GlobalKey<NavigatorState>();
+    // Dashboard auth guard
+    Future.delayed(const Duration(seconds: 1), () {
+      if (auth.currentUser == null) {
+        AppNavigator.of(context).pushReplacementNamed(AppRoutes.auth);
+      }
+    });
+  }
+
+  final List<String> _history = [DashboardWidgetRoutes.dashboard];
+  final routes = <String, Widget>{
+    DashboardWidgetRoutes.dashboard: DashboardScreen(),
+    DashboardWidgetRoutes.bulletin_list: BulletinScreen(),
+  };
+
+  get isInitialRoute => _history.length == 1;
+
+  void pushNamed(String name) {
+    if (!routes.containsKey(name)) {
+      throw FlutterError("Could not find route $name");
+    }
+
+    setState(() {
+      _history.add(name);
+    });
+  }
+
+  Future<bool> onBackPress() async {
+    if (isInitialRoute) {
+      return true;
+    }
+    setState(() {
+      _history.removeLast();
+    });
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(navigatorKey),
-      body: MaterialApp(
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          pageTransitionsTheme: PageTransitionsTheme(builders: {
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          }),
+    return _DashboardStateProvider(
+      state: this,
+      child: WillPopScope(
+        onWillPop: onBackPress,
+        child: Scaffold(
+          appBar: _appBar(),
+          body: AnimatedContainer(
+            duration: const Duration(seconds: 3),
+            curve: Curves.bounceIn,
+            child: routes[_history.last],
+          ),
         ),
-        initialRoute: "dashboard_screen",
-        routes: <String, WidgetBuilder>{
-          "dashboard_screen": (BuildContext context) => DashboardScreen(),
-          DashboardWidgetRoutes.bulletin_screen: (BuildContext context) => BulletinScreen(),
-        },
       ),
     );
   }
 
-  Widget _appBar(GlobalKey<NavigatorState> key) => AppBar(
+  Widget _appBar() => AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-            icon: const BackButtonIcon(),
-            color: Colors.black,
-            onPressed: () {
-              if (key.currentState.canPop()) {
-                key.currentState.pop();
-              }
-            }),
+        leading: isInitialRoute
+            ? IconButton(
+                icon: Icon(FontAwesomeIcons.user, color: Colors.black),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AppRoutes.settings);
+                })
+            : IconButton(icon: const BackButtonIcon(), color: Colors.black, onPressed: onBackPress),
+        actions: <Widget>[],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Container(
@@ -66,20 +107,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               height: 50,
               alignment: Alignment.centerLeft,
               child: Text(
-                "Dashboard",
+                _history.last,
                 style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
               )),
         ),
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Icon(FontAwesomeIcons.user, color: Colors.black),
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.settings);
-              },
-            ),
-          )
-        ],
       );
 }
