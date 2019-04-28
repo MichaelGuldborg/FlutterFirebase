@@ -44,7 +44,7 @@ class LoginForm extends StatelessWidget {
                 });
 
                 if (user != null) {
-                  AppNavigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+                  AppNavigator.of(context).pushReplacementNamed(AppRoutes.overview);
                 }
               }),
           FlatButton(

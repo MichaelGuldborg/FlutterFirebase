@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/components/rounded_card.dart';
 
 class BulletinScreen extends StatelessWidget {
-  final labels = ["Ulæste", "Bestyrelsen", "Alle"];
+  final tabLabels = ["Ulæste", "Bestyrelsen", "Alle"];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: labels.length,
+      length: tabLabels.length,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: Container(
             color: Colors.white,
             child: TabBar(
-              tabs: labels.map((text) => _tabButton(text)).toList(),
+              tabs: tabLabels.map((text) => _tabButton(text)).toList(),
             ),
           ),
         ),

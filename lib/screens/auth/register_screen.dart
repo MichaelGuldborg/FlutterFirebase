@@ -119,12 +119,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textColor: Colors.white,
                     color: Colors.lightBlue,
                     onPressed: () async {
-
-                      /*
                       final user = await auth.signUpWithEmail(_usernameController.text,
                           _emailController.text, _passwordController.text);
-                       */
-                      AppNavigator.of(context).pushReplacementNamed(AppRoutes.address);
+                      if (user != null) {
+                        AppNavigator.of(context).pushReplacementNamed(AppRoutes.overview);
+                      }
                     },
                   ),
                 ),

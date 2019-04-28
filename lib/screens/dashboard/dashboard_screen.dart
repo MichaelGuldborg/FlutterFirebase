@@ -13,6 +13,7 @@ class DashboardScreen extends StatelessWidget {
             title: "Opslagstavlen",
             status: "Aktiv 28. feb.",
             onPress: () {
+              // Navigator.push(context, SlideRightRouteBuilder(exitPage: this, enterPage: BulletinScreen()));
               Navigator.of(context).pushNamed(DashboardWidgetRoutes.bulletin_list);
             },
           ),

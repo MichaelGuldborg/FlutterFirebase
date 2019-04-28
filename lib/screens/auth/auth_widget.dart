@@ -1,13 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_screen.dart';
 import 'package:flutter_firebase_app/screens/auth/login_screen.dart';
 import 'package:flutter_firebase_app/screens/auth/register_screen.dart';
 import 'package:flutter_firebase_app/screens/auth/reset_password_screen.dart';
-import 'package:flutter_firebase_app/screens/address/search_address_screen.dart';
-import 'package:flutter_firebase_app/screens/address/search_zip_screen.dart';
-import 'package:flutter_firebase_app/screens/address/select_address_screen.dart';
 
 // Inherited widget
 // https://medium.com/flutter-community/widget-state-buildcontext-inheritedwidget-898d671b7956

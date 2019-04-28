@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/screens/address/address_widget.dart';
 import 'package:flutter_firebase_app/screens/auth/auth_widget.dart';
+import 'package:flutter_firebase_app/screens/basic/app_error_widget.dart';
+import 'package:flutter_firebase_app/screens/basic/overview_widget.dart';
+import 'package:flutter_firebase_app/screens/basic/splash_widget.dart';
+import 'package:flutter_firebase_app/screens/chat/chat_screen.dart';
 import 'package:flutter_firebase_app/screens/dashboard/dashboard_widget.dart';
+import 'package:flutter_firebase_app/screens/event/event_edit_screen.dart';
 import 'package:flutter_firebase_app/screens/event/event_screen.dart';
 import 'package:flutter_firebase_app/screens/settings/settings_screen.dart';
-import 'package:flutter_firebase_app/screens/splash_screen.dart';
 
 void main() => runApp(App());
 
@@ -17,14 +21,20 @@ class App extends StatefulWidget {
 class AppRoutes {
   static const splash = "splash";
   static const auth = "auth";
+
+  static const overview = "overview";
+
+  // Minejendom
   static const address = "address";
-
   static const dashboard = "dashboard";
-  static const event_dashboard = "event_dashboard";
-
   static const settings = "settings";
-  static const chat = "chat";
+
+  // Sidecourt
+  static const event_dashboard = "event_dashboard";
   static const event = "event";
+
+  // Other
+  static const chat = "chat";
 }
 
 class _AppStateProvider extends InheritedWidget {
@@ -61,19 +71,26 @@ class AppState extends State<App> {
         ),
         navigatorKey: navKey,
         initialRoute: AppRoutes.splash,
+        onUnknownRoute: (RouteSettings settings) => MaterialPageRoute(
+            builder: (BuildContext context) => AppErrorWidget(
+                  message: "The app route \"${settings.name}\" could not be found",
+                )),
         routes: <String, WidgetBuilder>{
-          AppRoutes.splash: (BuildContext context) => SplashScreen(),
+          AppRoutes.splash: (BuildContext context) => SplashWidget(),
           AppRoutes.auth: (BuildContext context) => AuthWidget(),
-          AppRoutes.address: (BuildContext context) => AddressWidget(),
-          AppRoutes.settings: (BuildContext context) => SettingsScreen(),
-          AppRoutes.dashboard: (BuildContext context) => DashboardWidget(),
-          AppRoutes.event_dashboard: (BuildContext context) => EventScreen(),
+          AppRoutes.overview: (BuildContext context) => OverviewWidget(),
 
-          /*
-          Routes.settings: (BuildContext context) => SettingsScreen(),
-          Routes.chat: (BuildContext context) => ChatView(chatId: 'chatIdtemp'),
-          Routes.event: (BuildContext context) => EventEditScreen(),
-           */
+          // Minejendom
+          AppRoutes.address: (BuildContext context) => AddressWidget(),
+          AppRoutes.dashboard: (BuildContext context) => DashboardWidget(),
+          AppRoutes.settings: (BuildContext context) => SettingsScreen(),
+
+          // Sidecourt
+          AppRoutes.event_dashboard: (BuildContext context) => EventScreen(),
+          AppRoutes.event: (BuildContext context) => EventEditScreen(),
+
+          // Others
+          AppRoutes.chat: (BuildContext context) => ChatView(chatId: 'chatIdtemp'),
         },
       ),
     );

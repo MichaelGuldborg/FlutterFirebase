@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_app/main.dart';
 import 'package:flutter_firebase_app/services/auth.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashWidget extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _SplashWidgetState createState() => _SplashWidgetState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-
+class _SplashWidgetState extends State<SplashWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -17,12 +16,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 1), handleNavigation);
   }
 
-
   void handleNavigation() async {
     FirebaseUser currentUser = await auth.getCurrentUser();
     print("currentUser");
     print(currentUser);
-    final route = currentUser == null ? AppRoutes.auth : AppRoutes.dashboard;
+    final route = currentUser == null ? AppRoutes.auth : AppRoutes.overview;
     Navigator.of(context).pushReplacementNamed(route);
   }
 
